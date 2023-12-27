@@ -86,7 +86,7 @@ export default function HomeScreen() {
           <CardComp />
           <PopularCards />
           <CardComp2 />
-          <CardComp2 />
+          {/* <CardComp2 /> */}
         </View>
       </ScrollView>
 
@@ -145,7 +145,8 @@ const styles = StyleSheet.create({
   cardcontainer: {
     backgroundColor: "white",
     width: "100%",
-    height: "80%",
+    height: "70%",
+    marginBottom:200,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },
