@@ -4,7 +4,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 
 export default function SearchComp() {
- 
   const words = ["Word", "Vocabulary", "Language"]; // Replace with your desired words
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("Search for Words");
@@ -32,15 +31,15 @@ export default function SearchComp() {
       <Text style={styles.text}>
         Let's begin your journey to amplify English.
       </Text>
-      <View style={styles.searchContainer}>
       <Pressable
-            onPress={() => navigation.navigate('Search')}
-            style={styles.searchIcon}
-          >
-            <FontAwesome name="search" size={22} color={"#8E5BE4"} />
-          </Pressable>
-        <Text style={styles.searchBar}>{displayedText}</Text>
-      </View>
+        onPress={() => navigation.navigate("Search")}
+        style={styles.searchIcon}
+      >
+        <View style={styles.searchContainer}>
+          <FontAwesome name="search" size={22} color={"#8E5BE4"} />
+          <Text style={styles.searchBar}>{displayedText}</Text>
+        </View>
+      </Pressable>
     </View>
   );
 }
@@ -81,6 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     marginTop: 10,
+    gap: 12
   },
   searchIcon: {
     padding: 10,

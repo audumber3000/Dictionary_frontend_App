@@ -57,8 +57,12 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} horizontal={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      horizontal={false}
+      contentContainerStyle={{ minHeight: "100%" }}
+    >
+      <View style={styles.container}>
         <View style={styles.profileImage}>
           <Image
             style={styles.profileImage}
@@ -88,31 +92,31 @@ export default function HomeScreen() {
           <CardComp2 />
           {/* <CardComp2 /> */}
         </View>
-      </ScrollView>
 
-      {/* bottom drawer */}
-      <RBSheet
-        ref={refRBSheet}
-        height={550}
-        openDuration={250}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "rgba(0,0,0,0.8)", // Adjust the opacity as needed
-          },
-          draggableIcon: {
-            backgroundColor: "grey",
-          },
-          container: {
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          },
-        }}
-      >
-        <ContactPermission onClose={toggleBottomSheet} />
-      </RBSheet>
-    </View>
+        {/* bottom drawer */}
+        <RBSheet
+          ref={refRBSheet}
+          height={550}
+          openDuration={250}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "rgba(0,0,0,0.8)", // Adjust the opacity as needed
+            },
+            draggableIcon: {
+              backgroundColor: "grey",
+            },
+            container: {
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            },
+          }}
+        >
+          <ContactPermission onClose={toggleBottomSheet} />
+        </RBSheet>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -145,10 +149,10 @@ const styles = StyleSheet.create({
   cardcontainer: {
     backgroundColor: "white",
     width: "100%",
-    height: "70%",
-    marginBottom:200,
+    height: "100%",
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    paddingBottom: 80,
   },
   notificationBadge: {
     position: "absolute",

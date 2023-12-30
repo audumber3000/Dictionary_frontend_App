@@ -38,28 +38,24 @@ const PopularCards = () => {
             cardText={"Unstop's Creative Hackathon"}
             isLatest={true}
             views={"5,800"} // One card has user views
-            timeLeft={0} // Second card has time left
           />
           <PopularCard1
             cardImage={require("../assets/popular_2.png")}
             cardText={"Masterclass: Solving Business Strategy Cases"}
             isLatest={false}
-            views={0}
-            timeLeft={19}
+            views={"2,600"}
           />
           <PopularCard1
             cardImage={require("../assets/popular_1.png")}
             cardText={"Unstop's Creative Hackathon"}
             isLatest={true}
             views={"5,800"}
-            timeLeft={0}
           />
           <PopularCard1
             cardImage={require("../assets/popular_2.png")}
             cardText={"Masterclass: Solving Business Strategy Cases"}
             isLatest={false}
-            views={0}
-            timeLeft={19}
+            views={"2,600"}
           />
         </ScrollView>
       </View>

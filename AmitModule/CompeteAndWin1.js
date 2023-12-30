@@ -13,7 +13,7 @@ const CompeteAndWin1 = () => {
         marginTop: 15,
       }}
     >
-      {/* Popular Heading */}
+      {/* Compete and Win Heading */}
       <View>
         <Text
           style={{
