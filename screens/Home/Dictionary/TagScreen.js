@@ -1,29 +1,31 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Image,
-  Pressable,
-} from "react-native";
-import React, { useState, useEffect } from "react";
-import Feed from "../../../LakshitModule/Feed";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import { useNavigation } from "@react-navigation/native";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, Text, Pressable, StyleSheet, FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Menu } from "native-base";
-import LottieView from "lottie-react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import axios from "axios";
+
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 import Loading from "./Loading";
 
-export default function WordList() {
+const TagScreen = () => {
   const [data, setData] = useState([]);
+  const navigation = useNavigation();
+  const [wordArr, setWordArr] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTkwMjI3N2FhYzNjMjAwMmExZTc2Y2EiLCJpYXQiOjE3MDM5NDQ4MjMsImV4cCI6MTcwMzk1OTIyMywidHlwZSI6ImFjY2VzcyJ9.1jmsgbtpvx7JTt9goRmpDf7ucF_6E21wYS-Qu6D8yic";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NThmZDMzMWFhYzNjMjAwMmExZTc2YzkiLCJpYXQiOjE3MDM5MjQ1MjksImV4cCI6MTcwMzkzODkyOSwidHlwZSI6ImFjY2VzcyJ9.h0IACsPJbUbgWmePk7BrYAPfRDuAef0LwRKx8ukA4jI";
+
+  const formWordArray = (data) => {
+    const tempArr = [];
+    data.map((e) => {
+      e.wordsList.map((word) => {
+        tempArr.push(word);
+      });
+    });
+    setWordArr(tempArr);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +46,8 @@ export default function WordList() {
           }
         );
         const newData = response.data.data;
+        setWordArr([]);
+        formWordArray(newData);
         setData(newData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -54,29 +58,29 @@ export default function WordList() {
 
     fetchData();
   }, []);
-  const navigation = useNavigation();
 
   const renderWordItem = ({ item }) => (
-    <View key={item.id} style={styles.listcard}>
-      <Image style={styles.cardimage} source={{ uri: item.Image }} />
-      <Text style={styles.cardtext}>{item.word}</Text>
-      <Text style={styles.cardtext2}>{item.meaning}</Text>
-      <Text style={styles.cardtext2}>{item.use_case}</Text>
-      <FontAwesome5
-        style={{ bottom: 110, textAlign: "right", right: 20 }}
-        onPress={() => navigation.navigate("Instructions")}
-        name="arrow-circle-right"
-        size={22}
-        color={"#8F6ACD"}
-      />
+    <View
+      style={{
+        backgroundColor: "#a678f2",
+        padding: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderRadius: 5,
+      }}
+    >
+      <Text style={{ color: "#f5f5f5", fontWeight: 600, fontSize: 16 }}>
+        {item.word}
+      </Text>
     </View>
   );
+
   if (!loading) {
     return (
       <View style={styles.container}>
         <View style={{ flex: 1, flexDirection: "row", top: 85 }}>
           <Menu
-            style={{ bottom: 150, left: 130 }}
+            style={{ bottom: -67, left: 135, flex: 1 }}
             trigger={(triggerProps) => {
               return (
                 <Pressable
@@ -110,23 +114,50 @@ export default function WordList() {
             size={24}
             color={"black"}
           />
-          <Text style={styles.headertext}>Word list</Text>
+          <Text style={styles.headertext}>Tag List</Text>
         </View>
-        <View style={{ flex: 4, bottom: 40 }}>
-          {loading && <Text>Loading</Text>}
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={data.flatMap((category) => category.wordsList)}
-            keyExtractor={(_item, index) => index.toString()}
-            renderItem={renderWordItem}
-          />
+
+        <View
+          style={{
+            position: "absolute",
+            top: 150,
+            width: "100%",
+            paddingLeft: 20,
+            paddingRight: 20,
+            flexDirection: "row",
+            gap: 20,
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          {/* tags */}
+          {wordArr.map((e, index) => {
+            return (
+              <Pressable key={index}>
+                <View
+                  style={{
+                    backgroundColor: "#A678F2",
+                    padding: 5,
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    fontWeight: 600,
+                    borderRadius: 5,
+                  }}
+                >
+                  <Text style={{ fontSize: 16, color: "#f5f5f5" }}>
+                    {e.word}
+                  </Text>
+                </View>
+              </Pressable>
+            );
+          })}
         </View>
       </View>
     );
   } else {
     return <Loading />;
   }
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -176,3 +207,5 @@ const styles = StyleSheet.create({
     letterSpacing: -0.32,
   },
 });
+
+export default TagScreen;

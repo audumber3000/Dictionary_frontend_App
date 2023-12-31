@@ -48,6 +48,9 @@ import LoginOptions from  "../screens/Auth/loginOptions";
 import LoginScreen from "../screens/Auth/login";
 import SignupScreen from "../screens/Auth/signup";
 import OTPPage from "../screens/Auth/otp";
+import TagScreen from "../screens/Home/Dictionary/TagScreen";
+import Quiz from "../screens/Home/Quiz/Quiz";
+import Instructions from "../screens/Home/Quiz/Instructions";
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
@@ -396,7 +399,7 @@ function BottomTabNavigationfun() {
 
       <BottomTabs.Screen
         name="Learn"
-        component={Learn}
+        component={WordList}
         options={{
           title: "Learn",
           headerShown: false,
@@ -539,9 +542,27 @@ function AuthenticatedStack() {
           component={WordList}
           options={{ headerShown: false }}
         />
+        {/* new added screen (Tag Screen) */}
+        <Stack.Screen
+          name="TagScreen"
+          component={TagScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Resist"
           component={Resist}
+          options={{ headerShown: false }}
+        />
+        {/* new added screen (Quiz) */}
+        <Stack.Screen
+          name="Quiz"
+          component={Quiz}
+          options={{ headerShown: false }}
+        />
+        {/* new added screen (Quiz) */}
+        <Stack.Screen
+          name="Instructions"
+          component={Instructions}
           options={{ headerShown: false }}
         />
 

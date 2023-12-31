@@ -1,14 +1,14 @@
-
 import "react-native-gesture-handler";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import React from 'react';
-import { useEffect, useState, useContext } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppLoading from 'expo-app-loading';
-import Navigation1 from './navigations/navigation';
-import AuthContextProvider, { AuthContext } from './store/auth-context';
-import Toast, { BaseToast, ErrorToast }  from 'react-native-toast-message';  //Toast Notification
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import React from "react";
+import { useEffect, useState, useContext } from "react";
+import { StatusBar } from "expo-status-bar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AppLoading from "expo-app-loading";
+import Navigation1 from "./navigations/navigation";
+import AuthContextProvider, { AuthContext } from "./store/auth-context";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message"; //Toast Notification
+import { NativeBaseProvider } from "native-base";
 
 import { usePushNotifications } from "./pushNotification";
 
@@ -64,18 +64,17 @@ export default function App() {
 
   return (
     <>
-   
-      <StatusBar backgroundColor='#A678F2' barStyle="light-content" />
+      <StatusBar backgroundColor="#A678F2" barStyle="light-content" />
       <AuthContextProvider>
-      
-        <Root />
-        
+        <NativeBaseProvider>
+          <Root />
+        </NativeBaseProvider>
+
         <>
           {/* this is an Toast message*/}
           <Toast config={toastConfig} />
         </>
       </AuthContextProvider>
-     
     </>
   );
 }
