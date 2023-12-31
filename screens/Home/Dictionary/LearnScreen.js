@@ -11,10 +11,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function WordCategory() {
   const [data, setData] = useState([]);
 
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTkwMjI3N2FhYzNjMjAwMmExZTc2Y2EiLCJpYXQiOjE3MDM5NDQ4MjMsImV4cCI6MTcwMzk1OTIyMywidHlwZSI6ImFjY2VzcyJ9.1jmsgbtpvx7JTt9goRmpDf7ucF_6E21wYS-Qu6D8yic"
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
+        // const token = await AsyncStorage.getItem("token");
 
         if (!token) {
           console.error("Token not found in AsyncStorage");

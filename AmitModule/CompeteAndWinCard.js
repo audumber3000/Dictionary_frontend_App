@@ -9,6 +9,7 @@ import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { Shadow } from "react-native-shadow-2";
+import { useNavigation } from "@react-navigation/native";
 
 const CompeteAndWinCard = ({
   cardTitle1,
@@ -19,9 +20,14 @@ const CompeteAndWinCard = ({
   backgroundId,
 }) => {
   const baseFontSize = 16;
+  const navigation = useNavigation();
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("Instructions");
+      }}
+    >
       <Shadow
         distance={1}
         containerStyle={{ marginLeft: 3 }}
@@ -92,7 +98,9 @@ const CompeteAndWinCard = ({
                   size={baseFontSize * 0.7}
                 />
               </Text>
-              <Text style={{ fontSize: baseFontSize * 0.65, color: "#595959" }}>{type}</Text>
+              <Text style={{ fontSize: baseFontSize * 0.65, color: "#595959" }}>
+                {type}
+              </Text>
             </View>
             <View
               style={{
@@ -116,7 +124,9 @@ const CompeteAndWinCard = ({
                 </Text>
               </View>
               <View style={{ flexDirection: "row", gap: 4 }}>
-                <Text style={{ fontSize: baseFontSize * 0.7, fontWeight: 500 }}>{users}</Text>
+                <Text style={{ fontSize: baseFontSize * 0.7, fontWeight: 500 }}>
+                  {users}
+                </Text>
                 <Text style={{ fontSize: baseFontSize * 0.7 }}>Attempted</Text>
               </View>
             </View>

@@ -9,13 +9,18 @@ import {
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Shadow } from "react-native-shadow-2";
+import { useNavigation } from "@react-navigation/native";
 
 const PopularCard1 = ({ cardImage, cardText, isLatest, views }) => {
-
   const baseFontSize = 16;
+  const navigation = useNavigation();
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("WordList");
+      }}
+    >
       <Shadow distance={2} containerStyle={{ marginLeft: 1 }}>
         <View
           style={{
@@ -33,7 +38,7 @@ const PopularCard1 = ({ cardImage, cardText, isLatest, views }) => {
               // height={"100%"}
               source={cardImage}
               resizeMode="cover"
-              style={{flex: 1}}
+              style={{ flex: 1 }}
             ></ImageBackground>
           </View>
           {/* Text */}
@@ -49,7 +54,9 @@ const PopularCard1 = ({ cardImage, cardText, isLatest, views }) => {
               }}
             >
               <View style={{ flex: 1 }}>
-                <Text style={{ color: "#263238", fontSize: baseFontSize*0.85 }}>
+                <Text
+                  style={{ color: "#263238", fontSize: baseFontSize * 0.85 }}
+                >
                   {cardText.length > 40
                     ? cardText.substr(0, 40) + "..."
                     : cardText}
@@ -63,7 +70,9 @@ const PopularCard1 = ({ cardImage, cardText, isLatest, views }) => {
                     borderRadius: 0.6,
                   }}
                 >
-                  <Text style={{ fontSize: baseFontSize * 0.6 }}>🎉 Latest</Text>
+                  <Text style={{ fontSize: baseFontSize * 0.6 }}>
+                    🎉 Latest
+                  </Text>
                 </View>
               )}
             </View>
@@ -84,7 +93,13 @@ const PopularCard1 = ({ cardImage, cardText, isLatest, views }) => {
                 size={20}
               />
 
-              <Text style={{ fontSize: baseFontSize * 0.75, color: "#333333", fontWeight: 500 }}>
+              <Text
+                style={{
+                  fontSize: baseFontSize * 0.75,
+                  color: "#333333",
+                  fontWeight: 500,
+                }}
+              >
                 {views}
               </Text>
               <Text style={{ color: "#595959", fontSize: baseFontSize * 0.75 }}>

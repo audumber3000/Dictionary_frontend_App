@@ -36,7 +36,7 @@ import LeadScreen2 from "../screens/LeaderBoard/LeadScreen2";
 import LeadScreen3 from "../screens/LeaderBoard/LeadScreen3";
 import Plans from "../LakshitModule/Plans";
 import NotificationPermission from "../components/HomeScreenComp/notificationPermission";
-import ContactPermission from '../components/HomeScreenComp/contactPermission'
+import ContactPermission from "../components/HomeScreenComp/contactPermission";
 import GoogleSignIn from "../components/Auth/GoogleAuthentication";
 import NewNotification from "../screens/NewNotification";
 
@@ -44,7 +44,7 @@ import { AuthContext } from "../store/auth-context";
 
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import LoginOptions from  "../screens/Auth/loginOptions";
+import LoginOptions from "../screens/Auth/loginOptions";
 import LoginScreen from "../screens/Auth/login";
 import SignupScreen from "../screens/Auth/signup";
 import OTPPage from "../screens/Auth/otp";
@@ -230,7 +230,7 @@ function NotificationsStack() {
       <Stack.Screen
         name="NewNotification"
         component={NewNotification}
-        options={{headerShown:(false)}}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
@@ -399,7 +399,8 @@ function BottomTabNavigationfun() {
 
       <BottomTabs.Screen
         name="Learn"
-        component={WordList}
+        // component={WordList}
+        component={Learn}
         options={{
           title: "Learn",
           headerShown: false,
