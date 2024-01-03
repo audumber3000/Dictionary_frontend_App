@@ -78,7 +78,6 @@ export default function Dev() {
         </Text> */}
           <Text style={styles.text3}>Phone</Text>
           <TextInput
-            autoFocus={true}
             placeholder="+91"
             textAlignVertical="center"
             placeholderTextColor="#49454F"

@@ -15,6 +15,7 @@ export default function WordCategory() {
   const [loading, setLoading] = useState(false);
 
   const { token } = useContext(AuthContext);
+  console.log(token);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,6 +157,7 @@ const styles = StyleSheet.create({
     color: "white",
     lineHeight: 34.48,
     letterSpacing: -0.28,
+    marginTop: 150
   },
   listcard: {
     backgroundColor: "white",

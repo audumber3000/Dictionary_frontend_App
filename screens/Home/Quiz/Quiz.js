@@ -97,12 +97,15 @@ const Quiz = () => {
         ref={refRBSheet}
         closeOnDragDown={true}
         onClose={nextQuestion}
+        style={{ position: "relative" }}
       >
         <View style={{ width: "100%" }}>
           <View
             style={{
               width: "100%",
-              alignItems: "center",
+              // alignItems: "center",
+              paddingLeft: 25,
+              paddingRight: 25,
               marginTop: 25,
             }}
           >
@@ -111,7 +114,17 @@ const Quiz = () => {
               {questionsArr[questionNum]?.question}
             </Text>
             {/* correct answer will be shown here */}
-            <Text style={{ fontSize: 20, marginTop: 20 }}>
+
+            <Image
+              source={{ uri: sampleImage }}
+              style={{
+                width: "100%",
+                height: 250,
+                borderRadius: 10,
+                marginTop: 20,
+              }}
+            />
+            <Text style={{ fontSize: 20, marginTop: 20, fontWeight: 500 }}>
               Correct answer : &nbsp;
               {questionsArr[questionNum]?.options.map((e) => {
                 if (e.correctOption == true) {
@@ -119,6 +132,12 @@ const Quiz = () => {
                 }
               })}
             </Text>
+            <AntDesign
+              name="closecircle"
+              size={25}
+              color={"#e1e1e1"}
+              style={{ position: "absolute", right: 30 }}
+            />
           </View>
         </View>
       </RBSheet>
@@ -146,6 +165,20 @@ const Quiz = () => {
       />
       <View style={{ position: "absolute", right: 33, top: 101 }}>
         <Text>{timeSeconds}</Text>
+      </View>
+
+      <View
+        style={{
+          width: "100%",
+          // backgroundColor: "red",
+          position: "absolute",
+          top: 100,
+          left: "30%",
+        }}
+      >
+        <Text style={{ marginRight: 105, fontSize: 20, fontWeight: 600 }}>
+          Question {questionNum + 1}/{questionsArr.length}
+        </Text>
       </View>
 
       <Text style={styles.questionText}>

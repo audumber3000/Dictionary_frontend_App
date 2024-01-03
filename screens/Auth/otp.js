@@ -79,7 +79,6 @@ export default function Devotp() {
           </Text>
           <Text style={styles.text3}>OTP</Text>
           <TextInput
-            autoFocus={true}
             maxLength={4}
             secureTextEntry
             textAlign="left"

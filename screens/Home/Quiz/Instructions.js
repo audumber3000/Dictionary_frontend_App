@@ -5,6 +5,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
+import { Sound } from "expo-av/build/Audio";
 
 const Instructions = () => {
   const navigation = useNavigation();
@@ -93,7 +94,8 @@ const Instructions = () => {
         >
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => {
+            onPress={async () => {
+              await sound.stopAsync();
               navigation.navigate("Quiz");
             }}
           >
