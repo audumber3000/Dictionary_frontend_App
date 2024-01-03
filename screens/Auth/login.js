@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { send_otp } from "../../utils/auth";
+import { send_otp } from "../../api/auth";
 import { AuthContext } from "../../store/auth-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -28,7 +28,7 @@ export default function Dev() {
   };
 
   const handleDismissKeyboard = () => {
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
   };
 
   useEffect(() => {
@@ -58,13 +58,16 @@ export default function Dev() {
   };
 
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.container}
-      extraScrollHeight={100}
-    >
+    // <KeyboardAwareScrollView
+    //   contentContainerStyle={styles.container}
+    //   extraScrollHeight={100}
+    // >
       <SafeAreaView style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image style={{width:350,height:350}} source={require("../../assets/pic1.png")} />
+          <Image
+            style={{ width: 350, height: 350 }}
+            source={require("../../assets/pic1.png")}
+          />
         </View>
         <View style={styles.formContainer}>
           <Text style={styles.text}>
@@ -75,6 +78,7 @@ export default function Dev() {
         </Text> */}
           <Text style={styles.text3}>Phone</Text>
           <TextInput
+            autoFocus={true}
             placeholder="+91"
             textAlignVertical="center"
             placeholderTextColor="#49454F"
@@ -107,7 +111,7 @@ export default function Dev() {
           <View style={{ flex: 1 }} />
         </View>
       </SafeAreaView>
-    </KeyboardAwareScrollView>
+    //  </KeyboardAwareScrollView> 
   );
 }
 

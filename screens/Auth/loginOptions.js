@@ -4,7 +4,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AuthContext } from "../../store/auth-context";
 import { useNavigation } from "@react-navigation/native";
-import { signin_with_google } from "../../utils/auth";
+import { signin_with_google } from "../../api/auth";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";

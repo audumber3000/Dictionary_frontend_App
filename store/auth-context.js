@@ -26,8 +26,7 @@ function AuthContextProvider({ children }) {
   function authenticateContact (contact) {
      setContact(contact);
       AsyncStorage.setItem('contact', contact);
- 
-    }
+}
 
   function authenticateUserId (userid) {
     setUserID(userid)

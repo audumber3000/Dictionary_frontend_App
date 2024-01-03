@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -94,20 +95,27 @@ export default function Substantiate() {
                 marginHorizontal: 10,
               }}
             >
-              <Image
-                style={{ width: 65, height: 65 }}
-                source={require("../../../assets/save.png")}
-              />
-              <Image
-                style={{ width: 65, height: 65 }}
-                source={require("../../../assets/favorite.png")}
-              />
-              <Image
-                style={{ width: 65, height: 65 }}
-                source={require("../../../assets/share.png")}
-              />
+              <TouchableOpacity activeOpacity={0.6}>
+                <Image
+                  style={{ width: 65, height: 65 }}
+                  source={require("../../../assets/save.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.6}>
+                <Image
+                  style={{ width: 65, height: 65 }}
+                  source={require("../../../assets/favorite.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.6}>
+                <Image
+                  style={{ width: 65, height: 65 }}
+                  source={require("../../../assets/share.png")}
+                />
+              </TouchableOpacity>
               {audio && (
-                <Pressable
+                <TouchableOpacity
+                  activeOpacity={0.6}
                   onPress={() => {
                     playSound();
                   }}
@@ -116,7 +124,7 @@ export default function Substantiate() {
                     style={{ width: 65, height: 65 }}
                     source={require("../../../assets/sound.png")}
                   />
-                </Pressable>
+                </TouchableOpacity>
               )}
             </View>
           </View>

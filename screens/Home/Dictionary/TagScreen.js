@@ -1,5 +1,12 @@
-import { View, Text, Pressable, StyleSheet, FlatList } from "react-native";
-import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import { Menu } from "native-base";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import axios from "axios";
@@ -7,6 +14,8 @@ import axios from "axios";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import Loading from "./Loading";
+import { AuthContext } from "../../../store/auth-context";
+import { swipeListAPI } from "../../../api/LearnScreenAPI";
 
 const TagScreen = () => {
   const [data, setData] = useState([]);
@@ -14,8 +23,7 @@ const TagScreen = () => {
   const [wordArr, setWordArr] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTkwMjI3N2FhYzNjMjAwMmExZTc2Y2EiLCJpYXQiOjE3MDM5NDQ4MjMsImV4cCI6MTcwMzk1OTIyMywidHlwZSI6ImFjY2VzcyJ9.1jmsgbtpvx7JTt9goRmpDf7ucF_6E21wYS-Qu6D8yic";
+  const { token } = useContext(AuthContext);
 
   const formWordArray = (data) => {
     const tempArr = [];
@@ -37,14 +45,7 @@ const TagScreen = () => {
           console.error("Token not found in AsyncStorage");
           return;
         }
-        const response = await axios.get(
-          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/user-word-category/65798b945026a7002a24e194",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await swipeListAPI(token); // The API is same for swipeList, tagView and wordList.
         const newData = response.data.data;
         setWordArr([]);
         formWordArray(newData);
@@ -59,21 +60,21 @@ const TagScreen = () => {
     fetchData();
   }, []);
 
-  const renderWordItem = ({ item }) => (
-    <View
-      style={{
-        backgroundColor: "#a678f2",
-        padding: 5,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 5,
-      }}
-    >
-      <Text style={{ color: "#f5f5f5", fontWeight: 600, fontSize: 16 }}>
-        {item.word}
-      </Text>
-    </View>
-  );
+  // const renderWordItem = ({ item }) => (
+  //   <View
+  //     style={{
+  //       backgroundColor: "#a678f2",
+  //       padding: 5,
+  //       paddingLeft: 10,
+  //       paddingRight: 10,
+  //       borderRadius: 5,
+  //     }}
+  //   >
+  //     <Text style={{ color: "#f5f5f5", fontWeight: 600, fontSize: 16 }}>
+  //       {item.word}
+  //     </Text>
+  //   </View>
+  // );
 
   if (!loading) {
     return (
@@ -133,7 +134,7 @@ const TagScreen = () => {
           {/* tags */}
           {wordArr.map((e, index) => {
             return (
-              <Pressable key={index}>
+              <TouchableOpacity key={index} activeOpacity={0.6}>
                 <View
                   style={{
                     backgroundColor: "#A678F2",
@@ -148,7 +149,7 @@ const TagScreen = () => {
                     {e.word}
                   </Text>
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             );
           })}
         </View>

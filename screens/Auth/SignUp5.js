@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -7,13 +7,13 @@ import {
   Pressable,
   Image,
   ActivityIndicator,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import * as Progress from "react-native-progress";
 import Feed from "../../LakshitModule/Feed";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {signup} from '../../utils/auth'
+import { signup } from "../../api/auth";
 import { AuthContext } from "../../store/auth-context";
 
 const SignUp5 = () => {
@@ -21,7 +21,7 @@ const SignUp5 = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [progress, setProgress] = useState(0.8);
   const [error, setError] = useState();
-  const [slideAlertMessage, setSlideAlertMessage] = useState('')
+  const [slideAlertMessage, setSlideAlertMessage] = useState("");
   const navigation = useNavigation();
   const authCtx = useContext(AuthContext);
 
@@ -29,45 +29,59 @@ const SignUp5 = () => {
     Keyboard.dismiss();
   };
 
-
   const handleSignup = async () => {
     try {
       setIsLoading(true);
 
       console.log("Lakshit");
       // Make a POST request to the API with the contact
-      handleDismissKeyboard
-      
-      
-     const contact= await AsyncStorage.getItem('contact');
-     const email = await AsyncStorage.getItem('email')
-     const name = await AsyncStorage.getItem('name')
-     const level_of_english = await AsyncStorage.getItem('level_of_english')
-     const password = contact + "Pass@123"
-     const native_language = await AsyncStorage.getItem('native_language')
-     const examAspirant = await AsyncStorage.getItem('examAspirant')
-     const topics = selectedImages
+      handleDismissKeyboard;
 
-     console.log('phone', contact,name,email,level_of_english,native_language,examAspirant,topics);
-      const data = await signup( contact, password,name,email,level_of_english,native_language,examAspirant,topics)
+      const contact = await AsyncStorage.getItem("contact");
+      const email = await AsyncStorage.getItem("email");
+      const name = await AsyncStorage.getItem("name");
+      const level_of_english = await AsyncStorage.getItem("level_of_english");
+      const password = contact + "Pass@123";
+      const native_language = await AsyncStorage.getItem("native_language");
+      const examAspirant = await AsyncStorage.getItem("examAspirant");
+      const topics = selectedImages;
 
-      console.log(data)
+      console.log(
+        "phone",
+        contact,
+        name,
+        email,
+        level_of_english,
+        native_language,
+        examAspirant,
+        topics
+      );
+      const data = await signup(
+        contact,
+        password,
+        name,
+        email,
+        level_of_english,
+        native_language,
+        examAspirant,
+        topics
+      );
 
-      
-      if(data.statusCode == 201){
-        console.log("Code 201")
-        setIsLoading(false)
-        await authCtx.authenticate(data.token.access.token)
-        authCtx.authenticateUserId(data._id)
-        navigation.navigate('SignUp1');
+      console.log(data);
+
+      if (data.statusCode == 201) {
+        console.log("Code 201");
+        setIsLoading(false);
+        await authCtx.authenticate(data.token.access.token);
+        authCtx.authenticateUserId(data._id);
+        navigation.navigate("SignUp1");
         setProgress(progress + 0.2);
-      }else
-      {
-        setSlideAlertMessage('Sorry, Looks like somthing went wrong !');
-        setIsLoading(false)
-        console.log("unsuccessfull")
+      } else {
+        setSlideAlertMessage("Sorry, Looks like somthing went wrong !");
+        setIsLoading(false);
+        console.log("unsuccessfull");
       }
-      
+
       // Simulate a delay (replace with actual logic)
       setTimeout(() => {
         // After successful signup or error handling, reset isLoading
@@ -78,8 +92,6 @@ const SignUp5 = () => {
       setIsLoading(false); // Reset isLoading in case of an error
     }
   };
-
-
 
   // const ImageSelector = () => {
   //   try {

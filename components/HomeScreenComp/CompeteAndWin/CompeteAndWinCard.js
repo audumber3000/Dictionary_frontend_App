@@ -60,8 +60,8 @@ const CompeteAndWinCard = ({
               style={{ flex: 1 }}
               source={
                 backgroundId % 2 == 0
-                  ? require("../assets/CompeteWinBg1.png")
-                  : require("../assets/CompeteWinBg2.png")
+                  ? require("../../../assets/CompeteWinBg1.png")
+                  : require("../../../assets/CompeteWinBg2.png")
               }
             ></ImageBackground>
           </View>

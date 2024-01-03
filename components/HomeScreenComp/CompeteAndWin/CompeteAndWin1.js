@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from "react-native";
 import React from "react";
-import PopularCard1 from "./PopularCard1";
+import PopularCard1 from "../PopularCard/PopularCard1";
 import CompeteAndWinCard from "./CompeteAndWinCard";
 
 const CompeteAndWin1 = () => {
@@ -36,7 +36,7 @@ const CompeteAndWin1 = () => {
           {/* Card components here */}
           <CompeteAndWinCard
             backgroundId={1}
-            cardLogo={require("../assets/Compete_Logo_1.png")}
+            cardLogo={require("../../../assets/Compete_Logo_1.png")}
             cardTitle1={"Monomousumi Monthl..."}
             cardTitle2={"Monomousumi"}
             type={"Offline"}
@@ -44,7 +44,7 @@ const CompeteAndWin1 = () => {
           />
           <CompeteAndWinCard
             backgroundId={2}
-            cardLogo={require("../assets/Compete_Logo_2.png")}
+            cardLogo={require("../../../assets/Compete_Logo_2.png")}
             cardTitle1={"Intuit - Prepare for the..."}
             cardTitle2={"Intuit"}
             type={"Online"}
@@ -52,7 +52,7 @@ const CompeteAndWin1 = () => {
           />
           <CompeteAndWinCard
             backgroundId={1}
-            cardLogo={require("../assets/Compete_Logo_1.png")}
+            cardLogo={require("../../../assets/Compete_Logo_1.png")}
             cardTitle1={"Monomousumi Monthl..."}
             cardTitle2={"Monomousumi"}
             type={"Offline"}

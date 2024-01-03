@@ -61,7 +61,7 @@ export default function PlayAndProg() {
                     left: 5,
                   }}
                 >
-                  Writee
+                  Write
                 </Text>
                 <Image
                   style={{ height: 20, width: 20, right: 40, bottom: 17 }}
@@ -143,7 +143,7 @@ export default function PlayAndProg() {
                     left: 5,
                   }}
                 >
-                  Writee
+                  Write
                 </Text>
                 <Image
                   style={{ height: 20, width: 20, right: 40, bottom: 17 }}

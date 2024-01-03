@@ -105,6 +105,15 @@ export default function SearchSection() {
     setLoading(false);
   };
 
+  const search = () => {
+    if (searchTerm.length == 0) {
+      console.warn("Enter a word");
+      return;
+    }
+    storeWord(searchTerm);
+    searchWord(searchTerm);
+  };
+
   const baseFontSize = 16;
 
   return (
@@ -121,11 +130,7 @@ export default function SearchSection() {
           {/* Search Icon */}
           {!loading && (
             <Ionicons
-              onPress={() => {
-                // navigation.navigate("Substantiate", { word: searchTerm });
-                storeWord(searchTerm);
-                searchWord(searchTerm);
-              }}
+              onPress={search}
               style={{
                 position: "absolute",
                 top: 8,
@@ -152,10 +157,13 @@ export default function SearchSection() {
           <TextInput
             placeholder="Search for Words"
             placeholderTextColor={"#CCCCCC"}
+            autoFocus={true}
+            returnKeyType="search"
             onChangeText={(e) => {
               setSearchTerm(e);
             }}
             value={searchTerm}
+            onSubmitEditing={search}
             style={{
               width: "90%",
               borderWidth: 1,

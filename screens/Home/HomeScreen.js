@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   Text,
+  TouchableOpacity,
 } from "react-native";
 import SearchComp from "../../components/HomeScreenComp/SearchComp";
 import CardComp from "../../components/HomeScreenComp/CardComp1";
@@ -20,7 +21,8 @@ import * as Contacts from "expo-contacts";
 import * as Notifications from "expo-notifications";
 
 import SlideAlert from "../../components/TostMessage/SlideAlert";
-import PopularCards from "../../AmitModule/PopularCards";
+import PopularCards from "../../components/HomeScreenComp/PopularCard/PopularCards";
+import { AuthContext } from "../../store/auth-context";
 
 export default function HomeScreen() {
   const refRBSheet = useRef();
@@ -29,19 +31,22 @@ export default function HomeScreen() {
   const [notificationCount, setNotificationCount] = useState(5); // Set the actual count as needed
   const [notificationPermission, setNotificationPermission] = useState(false);
 
-  useEffect(() => {
-    const checkAndRequestContactPermission = async () => {
-      const { status } = await Contacts.getPermissionsAsync();
+  // useEffect(() => {
+  //   const checkAndRequestContactPermission = async () => {
+  //     const { status } = await Contacts.getPermissionsAsync();
 
-      if (status !== "granted") {
-        // Permission not granted, open RBSheet to request permission
-        setTimeout(() => {
-          refRBSheet.current.open();
-        }, 2000);
-      }
-    };
-    checkAndRequestContactPermission();
-  }, []);
+  //     if (status !== "granted") {
+  //       // Permission not granted, open RBSheet to request permission
+  //       setTimeout(() => {
+  //         refRBSheet.current.open();
+  //       }, 2000);
+  //     }
+  //   };
+  //   checkAndRequestContactPermission();
+  // }, []);
+
+  const context = useContext(AuthContext);
+  console.log(context.token);
 
   const toggleBottomSheet = () => {
     if (refRBSheet.current) {
@@ -69,7 +74,8 @@ export default function HomeScreen() {
             source={require("../../assets/profile.png")}
           />
         </View>
-        <Pressable
+        <TouchableOpacity
+          activeOpacity={0.6}
           onPress={() => navigation.navigate("Notification")}
           style={styles.bellIcon}
         >
@@ -79,7 +85,7 @@ export default function HomeScreen() {
               <Text style={styles.notificationText}>{notificationCount}</Text>
             </View>
           )}
-        </Pressable>
+        </TouchableOpacity>
         <Image
           style={styles.backgroundImage}
           source={require("../../assets/wave1.png")}

@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React from "react";
-import CompeteAndWin from "./CompeteAndWin/CompeteAndWin";
 import PlayAndProg from "./PlayAndProgress/PlayAndProg";
-import CompeteAndWin1 from "../../AmitModule/CompeteAndWin1";
+import CompeteAndWin1 from "./CompeteAndWin/CompeteAndWin1";
 
 export default function CardComp2() {
   const color = ["rgba(166, 120, 242, 0.2)", "rgba(79, 79, 79, 0.1)"];

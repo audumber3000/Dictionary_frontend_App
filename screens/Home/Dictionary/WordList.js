@@ -6,7 +6,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Feed from "../../../LakshitModule/Feed";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -17,13 +17,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Menu } from "native-base";
 import LottieView from "lottie-react-native";
 import Loading from "./Loading";
+import { AuthContext } from "../../../store/auth-context";
+import { swipeListAPI } from "../../../api/LearnScreenAPI";
 
 export default function WordList() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTkwMjI3N2FhYzNjMjAwMmExZTc2Y2EiLCJpYXQiOjE3MDM5NDQ4MjMsImV4cCI6MTcwMzk1OTIyMywidHlwZSI6ImFjY2VzcyJ9.1jmsgbtpvx7JTt9goRmpDf7ucF_6E21wYS-Qu6D8yic";
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,14 +36,7 @@ export default function WordList() {
           console.error("Token not found in AsyncStorage");
           return;
         }
-        const response = await axios.get(
-          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/user-word-category/65798b945026a7002a24e194",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await swipeListAPI(token);
         const newData = response.data.data;
         setData(newData);
       } catch (error) {
@@ -64,7 +58,7 @@ export default function WordList() {
       <Text style={styles.cardtext2}>{item.use_case}</Text>
       <FontAwesome5
         style={{ bottom: 110, textAlign: "right", right: 20 }}
-        onPress={() => navigation.navigate("Instructions")}
+        // onPress={() => navigation.navigate("Instructions")}
         name="arrow-circle-right"
         size={22}
         color={"#8F6ACD"}

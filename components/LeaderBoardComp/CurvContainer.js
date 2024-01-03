@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { leaderBoard } from "../../api/LeaderBoardAPI";
 
 export default function CurveContainer() {
   const [data, setData] = useState([]);
@@ -15,14 +16,7 @@ export default function CurveContainer() {
           console.error("Token not found in AsyncStorage");
           return;
         }
-        const response = await axios.get(
-          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/leader-board",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await leaderBoard(token);
         const newData = response.data.data;
         setData(newData);
       } catch (error) {
@@ -34,64 +28,64 @@ export default function CurveContainer() {
   }, []);
 
   return (
-    <View style={styles.curvecontainer}>  
+    <View style={styles.curvecontainer}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}
         horizontal={false}
       >
-          <View style={{ marginBottom: 210 }}> 
-            {data.slice(3, 12).map((item) => (
-              <View key={item._id} style={styles.listcard}> 
-                <View
+        <View style={{ marginBottom: 210 }}>
+          {data.slice(3, 12).map((item) => (
+            <View key={item._id} style={styles.listcard}>
+              <View
+                style={{
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  flexDirection: "row",
+                }}
+              >
+                <Text
                   style={{
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                    flexDirection: "row",
+                    left: 10,
+                    top: 20,
+                    fontSize: 15,
+                    fontWeight: "bold",
                   }}
                 >
-                  <Text
-                    style={{
-                      left: 10,
-                      top: 20,
-                      fontSize: 15,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {item.userId}
-                  </Text>
-                  <Image
-                    style={styles.cardimage}
-                    source={{
-                      uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEyq_jXOpPcM7SXHtyI8E8sa8HDZX358Sgxw&usqp=CAU",
-                    }}
-                  />
+                  {item.userId}
+                </Text>
+                <Image
+                  style={styles.cardimage}
+                  source={{
+                    uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEyq_jXOpPcM7SXHtyI8E8sa8HDZX358Sgxw&usqp=CAU",
+                  }}
+                />
 
-                  <Text
-                    style={{
-                      left: 230,
-                      top: 25,
-                      color: "#966DDA",
-                      fontSize: 12,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {item.score}
-                  </Text>
-                  <Text
-                    style={{
-                      left: 40,
-                      top: 25,
-                      fontSize: 15,
-                      fontWeight: "900",
-                    }}
-                  >
-                    {item.name}
-                  </Text>
-                </View>
+                <Text
+                  style={{
+                    left: 230,
+                    top: 25,
+                    color: "#966DDA",
+                    fontSize: 12,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item.score}
+                </Text>
+                <Text
+                  style={{
+                    left: 40,
+                    top: 25,
+                    fontSize: 15,
+                    fontWeight: "900",
+                  }}
+                >
+                  {item.name}
+                </Text>
               </View>
-            ))}
-          </View>
+            </View>
+          ))}
+        </View>
       </ScrollView>
     </View>
   );

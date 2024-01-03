@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import Feed from "../../../LakshitModule/Feed";
 import Swiper from "react-native-deck-swiper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -11,6 +11,8 @@ import * as Speech from "expo-speech";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Menu } from "native-base";
 import Loading from "./Loading";
+import { AuthContext } from "../../../store/auth-context";
+import { swipeListAPI } from "../../../api/LearnScreenAPI";
 
 export default function SwipeList() {
   const [index, setIndex] = useState(0);
@@ -20,8 +22,7 @@ export default function SwipeList() {
   const [userWords, setUserWords] = useState([]); // It will consist objects of words which user knows and doesn't knows
   const currentCardIndex = useRef(0);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTkwMjI3N2FhYzNjMjAwMmExZTc2Y2EiLCJpYXQiOjE3MDM5NDQ4MjMsImV4cCI6MTcwMzk1OTIyMywidHlwZSI6ImFjY2VzcyJ9.1jmsgbtpvx7JTt9goRmpDf7ucF_6E21wYS-Qu6D8yic";
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,14 +34,7 @@ export default function SwipeList() {
           console.error("Token not found in AsyncStorage");
           return;
         }
-        const response = await axios.get(
-          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/user-word-category/65798b945026a7002a24e194",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await swipeListAPI(token); // API call
         const newData = response.data.data;
         setWordArr([]);
         formWordArray(newData);
@@ -117,10 +111,7 @@ export default function SwipeList() {
             name="volume-high"
             size={32}
             style={{ textAlign: "right", right: 20, bottom: 25 }}
-            onPress={
-              () => Speech.speak(card?.word)
-              // console.log(userWords)
-            }
+            onPress={() => Speech.speak(card?.word)  }
           />
           <Text style={styles.caption}>{card?.use_case}</Text>
           <Text style={{ top: 90, left: 20, position: "absolute" }}>

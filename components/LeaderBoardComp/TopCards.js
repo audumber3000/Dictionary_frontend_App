@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View,Image} from "react-native";
-import React,{useState,useEffect} from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
+import React, { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { leaderBoard } from "../../api/LeaderBoardAPI";
 
 export default function TopCards() {
   const [data, setData] = useState([]);
@@ -17,38 +18,31 @@ export default function TopCards() {
           console.error("Token not found in AsyncStorage");
           return;
         }
-        const response = await axios.get(
-          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/leader-board",
-          {
-            headers: {
-              Authorization:  `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await leaderBoard(token);
         const newData = response.data.data;
         setData(newData);
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false)
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
-  
+
   return (
-        <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          top:160,
-          left:5,
-        }}
-      >
-        {data.slice(1,2).map((item1) => (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        top: 160,
+        left: 5,
+      }}
+    >
+      {data.slice(1, 2).map((item1) => (
         <LinearGradient
           colors={["rgba(217, 217, 217, 0.2)", "rgba(217, 217, 217, 0)"]}
           style={styles.topcard1}
@@ -70,12 +64,32 @@ export default function TopCards() {
               source={require("../../assets/profile.png")}
             />
             <Text style={styles.badge1}>2</Text>
-            <Text style={{fontSize:10,fontWeight:"900",color:'white',left:4,bottom:3}}>{item1.name}</Text>
-            <Text style={{fontSize:10,fontWeight:"900",color:'#48D5A6',left:25,bottom:2}}>{item1.score}</Text>
+            <Text
+              style={{
+                fontSize: 10,
+                fontWeight: "900",
+                color: "white",
+                left: 4,
+                bottom: 3,
+              }}
+            >
+              {item1.name}
+            </Text>
+            <Text
+              style={{
+                fontSize: 10,
+                fontWeight: "900",
+                color: "#48D5A6",
+                left: 25,
+                bottom: 2,
+              }}
+            >
+              {item1.score}
+            </Text>
           </View>
         </LinearGradient>
-        ))}
-        {data.slice(0,1).map((item2) => (
+      ))}
+      {data.slice(0, 1).map((item2) => (
         <LinearGradient
           colors={["rgba(217, 217, 217, 0.5)", "rgba(217, 217, 217, 0)"]}
           style={styles.topcard2}
@@ -93,18 +107,41 @@ export default function TopCards() {
               borderWidth: 2,
             }}
           >
-            <Image style={{width:23.16,height:21,bottom:30,left:35}} source={require('../../assets/Crown.png')}/>
             <Image
-              style={{ width: 99, height: 99,bottom:21}}
+              style={{ width: 23.16, height: 21, bottom: 30, left: 35 }}
+              source={require("../../assets/Crown.png")}
+            />
+            <Image
+              style={{ width: 99, height: 99, bottom: 21 }}
               source={require("../../assets/profile.png")}
             />
-             <Text style={styles.badge3}>1</Text>
-             <Text style={{fontSize:13,fontWeight:"900",color:'white',left:15,bottom:30}}>{item2.name}</Text>
-            <Text style={{fontSize:13,fontWeight:"900",color:'#FED003',left:38,bottom:27}}>{item2.score}</Text>
+            <Text style={styles.badge3}>1</Text>
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: "900",
+                color: "white",
+                left: 15,
+                bottom: 30,
+              }}
+            >
+              {item2.name}
+            </Text>
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: "900",
+                color: "#FED003",
+                left: 38,
+                bottom: 27,
+              }}
+            >
+              {item2.score}
+            </Text>
           </View>
         </LinearGradient>
-        ))}
-        {data.slice(2,3).map((item3)=>(
+      ))}
+      {data.slice(2, 3).map((item3) => (
         <LinearGradient
           colors={["rgba(217, 217, 217, 0.2)", "rgba(217, 217, 217, 0)"]}
           style={styles.topcard3}
@@ -128,12 +165,32 @@ export default function TopCards() {
               source={require("../../assets/profile.png")}
             />
             <Text style={styles.badge2}>3</Text>
-            <Text style={{fontSize:10,fontWeight:"900",color:'white',left:10,bottom:3}}>{item3.name}</Text>
-            <Text style={{fontSize:10,fontWeight:"900",color:'#F6A14A',left:26,bottom:2}}>{item3.score}</Text>
+            <Text
+              style={{
+                fontSize: 10,
+                fontWeight: "900",
+                color: "white",
+                left: 10,
+                bottom: 3,
+              }}
+            >
+              {item3.name}
+            </Text>
+            <Text
+              style={{
+                fontSize: 10,
+                fontWeight: "900",
+                color: "#F6A14A",
+                left: 26,
+                bottom: 2,
+              }}
+            >
+              {item3.score}
+            </Text>
           </View>
         </LinearGradient>
-        ))}
-      </View> 
+      ))}
+    </View>
   );
 }
 

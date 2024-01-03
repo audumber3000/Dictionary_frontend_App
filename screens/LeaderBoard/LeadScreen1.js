@@ -1,4 +1,11 @@
-import {StyleSheet,Text, View,TouchableOpacity,ScrollView,Image,} from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+} from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import TopCards from "../../components/LeaderBoardComp/TopCards";
@@ -8,29 +15,29 @@ export default function LeadScreen1() {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <View style={{alignItems:'flex-end',right:10}}>
-      <Image
-        style={styles.backgroundImage}
-        source={require("../../assets/ellipse1.png")}
-      />
+      <View style={{ alignItems: "flex-end", right: 10 }}>
+        <Image
+          style={styles.backgroundImage}
+          source={require("../../assets/ellipse1.png")}
+        />
       </View>
-      <View style={{alignItems:'flext-start',left:80,bottom:5}}>
-      <Image
-        style={styles.backgroundImage}
-        source={require("../../assets/ellipse2.png")}
-      />
+      <View style={{ alignItems: "flext-start", left: 80, bottom: 5 }}>
+        <Image
+          style={styles.backgroundImage}
+          source={require("../../assets/ellipse2.png")}
+        />
       </View>
-      <View style={{alignItems:'center',right:80,top:120}}>
-      <Image
-        style={styles.backgroundImage}
-        source={require("../../assets/ellipse4.png")}
-      />
+      <View style={{ alignItems: "center", right: 80, top: 120 }}>
+        <Image
+          style={styles.backgroundImage}
+          source={require("../../assets/ellipse4.png")}
+        />
       </View>
-      <View style={{alignItems:'center',left:80,top:90}}>
-      <Image
-        style={styles.backgroundImage}
-        source={require("../../assets/ellipse6.png")}
-      />
+      <View style={{ alignItems: "center", left: 80, top: 90 }}>
+        <Image
+          style={styles.backgroundImage}
+          source={require("../../assets/ellipse6.png")}
+        />
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -48,12 +55,12 @@ export default function LeadScreen1() {
             <TouchableOpacity
               onPress={() => navigation.navigate("LeadScreen2")}
             >
-              <Text style={{ right: 15,fontWeight:"900" }}>This week</Text>
+              <Text style={{ right: 15, fontWeight: "900" }}>This week</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate("LeadScreen3")}
             >
-              <Text style={{fontWeight:"900"}}>Month</Text>
+              <Text style={{ fontWeight: "900" }}>Month</Text>
             </TouchableOpacity>
           </View>
           <TopCards />
@@ -100,6 +107,6 @@ const styles = StyleSheet.create({
   scrollview: { flexGrow: 1 },
   backgroundImage: {
     position: "absolute",
-    top:50,
+    top: 50,
   },
 });

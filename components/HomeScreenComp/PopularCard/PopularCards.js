@@ -34,25 +34,25 @@ const PopularCards = () => {
         >
           {/* Card code */}
           <PopularCard1
-            cardImage={require("../assets/popular_1.png")}
+            cardImage={require("../../../assets/popular_1.png")}
             cardText={"Unstop's Creative Hackathon"}
             isLatest={true}
             views={"5,800"} // One card has user views
           />
           <PopularCard1
-            cardImage={require("../assets/popular_2.png")}
+            cardImage={require("../../../assets/popular_2.png")}
             cardText={"Masterclass: Solving Business Strategy Cases"}
             isLatest={false}
             views={"2,600"}
           />
           <PopularCard1
-            cardImage={require("../assets/popular_1.png")}
+            cardImage={require("../../../assets/popular_1.png")}
             cardText={"Unstop's Creative Hackathon"}
             isLatest={true}
             views={"5,800"}
           />
           <PopularCard1
-            cardImage={require("../assets/popular_2.png")}
+            cardImage={require("../../../assets/popular_2.png")}
             cardText={"Masterclass: Solving Business Strategy Cases"}
             isLatest={false}
             views={"2,600"}

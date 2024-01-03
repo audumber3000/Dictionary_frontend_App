@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Heading, VStack, FormControl, Input, Button, Center, NativeBaseProvider, Image, ScrollView } from "native-base";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {signup} from '../../utils/auth'
+import {signup} from '../../api/auth'
 import { useNavigation } from '@react-navigation/native';
 import SlideAlert from '../../components/TostMessage/SlideAlert';
 

@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import LottieView from "lottie-react-native";
+import { Spinner } from "native-base";
 
 const Loading = () => {
   return (
@@ -10,28 +11,14 @@ const Loading = () => {
         width: "100%",
         height: "100%",
         backgroundColor: "#fff",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <LottieView
-        style={{
-          position: "absolute",
-          width: "100%",
-          top: 100,
-        }}
-        source={require("./animations/loading.json")}
-        autoPlay={true}
-        loop={true}
-      />
-      <Text
-        style={{
-          fontSize: 16,
-          position: "absolute",
-          top: "53%",
-          left: "36.5%",
-        }}
-      >
-        Fetching data
-      </Text>
+      <View>
+        <Spinner size={"xl"} color={"#8F6ACD"} />
+        <Text>Fetching data</Text>
+      </View>
     </View>
   );
 };
