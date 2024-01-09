@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import { BackHandler, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../constants/style";
 import Help from "../screens/Help";
 import Favorite from "../screens/FavoriteScreen";
@@ -36,9 +37,11 @@ import Quiz from "../screens/Home/Quiz/Quiz";
 import Instructions from "../screens/Home/Quiz/Instructions";
 import { BottomTabNavigationfun } from "./bottomTab";
 import { LeadBoard, TopTabNavigation } from "./topTab";
+import Result from "../screens/Home/Quiz/Result";
 const Stack = createNativeStackNavigator();
 
 function AuthStack() {
+  
   return (
     <Stack.Navigator
       initialRouteName="LoginOptions"
@@ -360,7 +363,20 @@ function AuthenticatedStack() {
         <Stack.Screen
           name="Instructions"
           component={Instructions}
-          options={{ headerShown: false }}
+
+          options={{
+            headerShown: false}}
+        />
+        <Stack.Screen
+          name="Result"
+          component={Result}
+
+          options={{
+            headerTransparent: true,
+            headerBackVisible: true,
+            headerTintColor: 'black',
+            headerTitle:''
+          }}
         />
 
         <Stack.Screen

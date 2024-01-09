@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View, TextInput, SafeAreaView,Pressable,ActivityIndicator} from "react-native";
-import React,{useState} from "react";
+import { StyleSheet, Text, View, TextInput, SafeAreaView,Pressable,ActivityIndicator,BackHandler} from "react-native";
+import React,{useState,useEffect} from "react";
 import * as Progress from "react-native-progress";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 
 export default function SignUp1() {
+  
   const [name, setName] = useState("");
   const[progress,setProgress] = useState(0.05)
   const [email, setEmail] = useState("");
