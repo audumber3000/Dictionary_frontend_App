@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState,useEffect } from "react";
+import { View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard,BackHandler } from 'react-native';
 import { Heading, VStack, FormControl, Input, Button, Center, NativeBaseProvider, Image, ScrollView } from "native-base";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {signup} from '../../api/auth'
@@ -7,6 +7,13 @@ import { useNavigation } from '@react-navigation/native';
 import SlideAlert from '../../components/TostMessage/SlideAlert';
 
 const SignupPage = () => {
+  useEffect(() => {
+    const backAction = BackHandler.exitApp()
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
+    
+    return ()=>backHandler.remove()
+  },[])
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
