@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View,Image, StatusBar,TouchableOpacity } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { AntDesign } from '@expo/vector-icons'
 
 
 const Result = () => {
@@ -29,12 +30,12 @@ const Result = () => {
 
           </View>
           <View style={styles.btnView}>
-              <TouchableOpacity >
-                  <Image style={{width:280,height:60,borderRadius:100}} source={require('../../../assets/coin/Button.png')}/>
+              <TouchableOpacity style={styles.doneBtn} >
+                  <Text style={styles.doneText}>Done</Text>
               </TouchableOpacity>
               
-              <TouchableOpacity >
-                  <Image style={{width:70,height:60}} source={require('../../../assets/coin/share.png')}/>
+              <TouchableOpacity style={styles.shareBtn}>
+              <AntDesign name="sharealt" size={24} color="#59066c" />
               </TouchableOpacity>
               
           </View>
@@ -46,6 +47,29 @@ const Result = () => {
 export default Result
 
 const styles = StyleSheet.create({
+    doneBtn: {
+        width:'65%',
+        backgroundColor: '#5a04a6',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50,
+        borderRadius: 40,
+        
+    },
+    doneText: {
+        color: 'white',
+        fontSize: 22,
+        fontWeight:'600'
+    },
+    shareBtn: {
+        borderColor: 'black',
+        borderWidth: 0.3,
+        width: 60,
+        height: 50,
+        borderRadius: 25,
+        alignItems: 'center',
+        justifyContent:'center'
+    },
     imgView: {
         width: '90%',
         height: 300,
@@ -79,7 +103,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 50,
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
+
         gap:30
     }
 })

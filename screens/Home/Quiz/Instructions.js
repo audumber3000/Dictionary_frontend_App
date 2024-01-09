@@ -56,7 +56,7 @@ const Instructions = ({navigation}) => {
             <Image source={require('../../../assets/coin/Frame.png')} style={{width:20,height:20}}/>
             <Text >70K coins distributed till now</Text>
           </View>
-          <TouchableOpacity onPress={()=>navigation.navigate('Result')} style={styles.btnContainer}>
+          <TouchableOpacity onPress={()=>navigation.navigate('Quiz')} style={styles.btnContainer}>
             <Text style={styles.btnText}>Play Quiz Now</Text>
           </TouchableOpacity>
         </View>
