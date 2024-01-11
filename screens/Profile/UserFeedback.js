@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
 import { View, ScrollView, TextInput, Button, Text, StyleSheet } from 'react-native';
 
@@ -13,6 +14,7 @@ const UserFeedback = () => {
   const handleSubmit = () => {
     // handle form submission logic here
     console.log(feedbackText);
+    
     setFeedbackText('');
     setSubmitEnabled(false);
   };

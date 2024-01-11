@@ -1,20 +1,46 @@
-import { StyleSheet, Text, View,Image, FlatList } from 'react-native'
-import React,{useContext,useState,useEffect,useCallback} from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { AuthContext } from "../../../store/auth-context";
+import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState,useContext } from 'react';
 import axios from 'axios';
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import * as Progress from "react-native-progress";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Loading from './Loading';
-import { useFocusEffect } from '@react-navigation/native';
-const Tab = createMaterialTopTabNavigator()
-
-const Home = ({navigation}) => {
+import { AuthContext } from '../../../store/auth-context';
+import * as Progress from "react-native-progress";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+const LearnScreen = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { token } = useContext(AuthContext)
-  const RenderItem = ({item}) => {
+  const { token } = useContext(AuthContext);
+  const [selectedTab, setSelectedTab] = useState('General');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        if (!token) {
+          console.error("Token not found in AsyncStorage");
+          return;
+        }
+        const response = await axios.get(
+          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/user-word-category/65798b945026a7002a24e194",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const newData = response.data.data;
+        setData(newData);
+      } catch (error) {
+        console.error("error found");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [token]);
+  console.log(data)
+
+  const RenderItem = ({ item }) => {
     return (
       <View style={styles.flatContainer}>
         <View style={styles.cardContainer}>
@@ -53,105 +79,114 @@ const Home = ({navigation}) => {
         </View>
           </View>
       </View>
-    )
-  }
-  useFocusEffect(
-    useCallback(() => {
-      const fetchData = async() => {
-        try {
-          setLoading(true)
-        if (!token) {
-          console.error("Token not found in AsyncStorage");
-          return;
-        }
-        const response = await axios.get(
-          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/user-word-category/65798b945026a7002a24e194",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        const newData = response.data.data
-        setData(newData)
-        } catch (error) {
-          console.error("error found");
-        } finally {
-          setLoading(false)
-        }
-      }
-      fetchData()
-    },[token])
-  )
+    );
+  };
 
-  
+  const General = () => {
 
-  if (!loading) {
-    return (
-      <View style={styles.middleContainer}>
-        <FlatList
-        data={data}
-        renderItem={RenderItem}
-        
-      />
-      </View>
-    )
-  } else {
-    return <Loading/>
-  }
-}
-const Setting = () => {
-  return (
-    <View>
-      <Text></Text>
-    </View>
-  )
-}
-const LearnScreen = () => {
+    if (!loading) {
+      return (
+        <View style={styles.middleContainer}>
+          <FlatList
+            data={data}
+            renderItem={RenderItem}
+          />
+        </View>
+      );
+    } else {
+      return <Loading />;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.topContainer}>
-        <Text style={{ fontSize:26, fontWeight: 'bold',color:'white',left:20,top:10}}>Word Categories</Text>
+      
+
+      <View style={styles.topView}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: 'white', left: 20, top: 10 }}>Word Categories</Text>
         <Image style={styles.imgView} source={require('../../../assets/Group1.png')} />
+
       </View>
-      <View style={styles.bottomContainer}>
-        <Tab.Navigator>
-          <Tab.Screen options={{
-            
-            tabBarLabelStyle: { fontSize: 22, fontWeight:'700',textTransform:'none',color:'#6829ce' },
-            tabBarIndicatorStyle: {
-              height: 3,
-              width: 69,
-              left: 19,
-              bottom:6,
-              backgroundColor: '#A780E8',
-              
-            },
-            tabBarStyle:{width:220}
-          }} name='General' component={Home} />
-          <Tab.Screen
-            options={{
-              
-              tabBarLabelStyle: { fontSize: 22,textTransform:'none', color:'#6829ce',fontWeight:'700'  },
-              tabBarIndicatorStyle: {
-                height: 3,
-                bottom:6,
-                width: 66,
-                left: 22,
-                backgroundColor:'#A780E8'
-              },
-              tabBarStyle:{width:220}
-            }}
-            name='Exams' component={Setting} />
-          </Tab.Navigator>
+      <View style={styles.bottomView}>
+        <View style={styles.buttonView}>
+        <TouchableOpacity
+        style={[styles.firstBtn, selectedTab === 'General' ? styles.selected : null]}
+        onPress={() => setSelectedTab('General')}
+      >
+        <Text style={[styles.textView, selectedTab === 'General' ? styles.selectedText : null]}>General</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.secondBtn, selectedTab === 'Exams' ? styles.selected : null]}
+        onPress={() => setSelectedTab('Exams')}
+      >
+            <View style={{flexDirection:'row'}}>
+              <Text style={[styles.textView, selectedTab === 'Exams' ? styles.selectedText : null]}>Exams</Text>
+              <Image style={{width:33,height:33,position:'absolute',left:80,top:1}} source={require('../../../assets/coin/icon.png')}/>
+        </View>
+      </TouchableOpacity>
+      
+
+
+      </View>
+      {selectedTab === 'General' && <General />}
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default LearnScreen
+// Your existing styles
+
+export default LearnScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  topView: {
+    flex: 1,
+    backgroundColor: '#A780E8',
+  },
+  bottomView: {
+    flex: 3.5,
+    backgroundColor: 'white',
+  },
+  imgView: {
+    width: '100%',
+    height: 300,
+    resizeMode: 'cover',
+    top: 20,
+  },
+  buttonView: {
+    flexDirection: 'row',
+    left: 5,
+    top: 6,
+  },
+  textView: {
+    fontSize: 25,
+    fontWeight: '800',
+    color: '#5620ad',
+  },
+  firstBtn: {
+    left:20,
+    paddingVertical: 14,
+    borderBottomWidth: 2, // Default bottom border
+    borderColor: 'transparent', // Default border color
+    
+  },
+  secondBtn: {
+   left:60,
+    paddingVertical: 14,
+    borderBottomWidth: 2, // Default bottom border
+    borderColor: 'transparent', // Default border color
+  },
+  selected: {
+    borderColor: '#5620ad',
+    
+    
+  },
+  selectedText: {
+    color: '#5620ad', // Selected text color
+  },
   topContainer: {
     flex: 1,
     backgroundColor:'#A780E8'
@@ -217,4 +252,4 @@ const styles = StyleSheet.create({
     flexDirection:'row'
   }
   
-})
+});

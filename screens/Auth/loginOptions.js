@@ -47,6 +47,7 @@ const LoginOptions = () => {
                 navigation.navigate("TopTab");
             } else if (data.code === 201) {
                 await authCtx.authenticate(data.token.access.token);
+                
                 navigation.navigate("Dev");
             } else {
                 console.log("Something went wrong with GoogleSignIn");

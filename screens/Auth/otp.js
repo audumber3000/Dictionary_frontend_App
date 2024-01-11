@@ -39,13 +39,15 @@ export default function Devotp() {
       setisLoading(true);
       const contact = await AsyncStorage.getItem("contact");
       const data = await verify_otp(contact, otp);
-
+// redirecting to signup page
       if (data.code === 200) {
         setisLoading(false);
         navigation.navigate("TopTab");
       } else if (data.code === 201) {
         setisLoading(false);
         authCtx.authenticate(data.token.access.token);
+        authCtx.authenticateUserId(data.data._id)
+        console.log('otp page data',data.data._id)
         navigation.navigate("Dev");
       } else {
         setisLoading(false);
