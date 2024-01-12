@@ -9,16 +9,16 @@ import {
   Image,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { useNavigation } from "@react-navigation/native";
+
 import LottieView from "lottie-react-native";
 import { questionsArr } from "./questions";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { Audio } from "expo-av";
 
-const Quiz = () => {
+const Quiz = ({navigation}) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const navigation = useNavigation();
+
   const [questionNum, setQuestionNum] = useState(0);
   const [showAnimation, setShowAnimation] = useState(false);
   const [timer, setTimer] = useState(100);
@@ -39,6 +39,7 @@ const Quiz = () => {
       if (prevVal != len - 1) {
         return prevVal + 1;
       } else {
+         navigation.navigate("Result")
         return 0;
       }
     });
@@ -207,7 +208,11 @@ const Quiz = () => {
                   setShowAnimation(true);
                   setTimeout(() => {
                     setShowAnimation(false);
-                    nextQuestion();
+                    if (questionNum === questionsArr.length - 1) {
+                      navigation.navigate('Result')
+                    } else {
+                      nextQuestion()
+                    }
                   }, 1500);
                 } else {
                   refRBSheet.current.open();

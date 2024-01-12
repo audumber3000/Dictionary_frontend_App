@@ -5,7 +5,7 @@ import Swiper from "react-native-deck-swiper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
+import LottieView from "lottie-react-native";
 import axios from "axios";
 import * as Speech from "expo-speech";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,12 +13,16 @@ import { Menu } from "native-base";
 import Loading from "./Loading";
 import { AuthContext } from "../../../store/auth-context";
 import { swipeListAPI } from "../../../api/LearnScreenAPI";
+import AnimatedLottieView from "lottie-react-native";
+export default function SwipeList({navigation}) {
+  const [lastQuestionReached, setLastQuestionReached] = useState(false);
 
-export default function SwipeList() {
   const [index, setIndex] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [wordArr, setWordArr] = useState([]);
+  const [swipeCount, setSwipeCount] = useState(0);
+
   const [userWords, setUserWords] = useState([]); // It will consist objects of words which user knows and doesn't knows
   const currentCardIndex = useRef(0);
 
@@ -36,9 +40,11 @@ export default function SwipeList() {
         }
         const response = await swipeListAPI(token); // API call
         const newData = response.data.data;
+       
         setWordArr([]);
         formWordArray(newData);
         setData(newData);
+        console.log(wordArr)
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -50,21 +56,26 @@ export default function SwipeList() {
   }, []);
   const swiperRef = useRef();
 
-  const navigation = useNavigation();
+
 
   const onSwiped = () => {
     setIndex((index + 1) % Feed.length);
+    setSwipeCount(swipeCount+1)
   };
 
   const formWordArray = (data) => {
     const tempArr = [];
     data.map((e) => {
       e.wordsList.map((word) => {
+        
         tempArr.push(word);
+        
       });
     });
     setWordArr(tempArr);
+    
   };
+
 
   const knownWord = () => {
     let wordObj = {
@@ -76,8 +87,12 @@ export default function SwipeList() {
       return [...prevVal, wordObj];
     });
     currentCardIndex.current += 1;
-    if (currentCardIndex.current >= 10) {
-      console.warn("10 cards reached, send request to backend");
+    if (currentCardIndex.current > wordArr.length-1) {
+      setTimeout(() => {
+        navigation.navigate("Learn")
+      },1300)
+
+      
     }
   };
 
@@ -91,8 +106,13 @@ export default function SwipeList() {
       return [...prevVal, wordObj];
     });
     currentCardIndex.current += 1;
-    if (currentCardIndex.current >= 10) {
-      console.warn("10 cards reached, send request to backend");
+    if (currentCardIndex.current >wordArr.length-1) {
+      setLoading(true)
+      setTimeout(() => {
+        navigation.navigate("Learn")
+      },1300)
+
+
     }
   };
 
@@ -125,23 +145,35 @@ export default function SwipeList() {
   if (!loading) {
     return (
       <View style={styles.container}>
-        <Swiper
-          ref={swiperRef}
-          backgroundColor="white"
-          cards={wordArr}
-          cardIndex={index}
-          renderCard={(card) => Card(card)}
-          onSwiped={onSwiped}
-          onSwipedLeft={unknownWord}
-          onSwipedRight={knownWord}
-          disableBottomSwipe
-          disableTopSwipe
-          animateCardOpacity
-          stackSize={2}
-          stackScale={10}
-          stackSeparation={1}
-          infinite
-        />
+        {swipeCount >= 4 ?
+          
+            <LottieView
+    style={{ width: 200, height: 900,position:'absolute' }}
+    source={require('../../../assets/coin/celebration.json')}
+    autoPlay
+    loop
+  />
+
+  
+      :
+      (<Swiper
+        ref={swiperRef}
+        backgroundColor="white"
+        cards={wordArr}
+        cardIndex={index}
+        renderCard={(card) => Card(card)}
+        onSwiped={onSwiped}
+        onSwipedLeft={unknownWord}
+        onSwipedRight={knownWord}
+        disableBottomSwipe
+        disableTopSwipe
+        animateCardOpacity
+        stackSize={2}
+        stackScale={10}
+        stackSeparation={1}
+        // infinite
+      />)    
+      }
         <Menu
           style={{ bottom: 154, left: 70 }}
           trigger={(triggerProps) => {
@@ -192,6 +224,7 @@ export default function SwipeList() {
             color={"#EE6A6A"}
             onPress={() => swiperRef.current.swipeLeft()}
           />
+          
           <Text style={{ fontSize: 20, left: 40 }}>NO</Text>
         </View>
         <View style={{ top: 150, left: 120 }}>

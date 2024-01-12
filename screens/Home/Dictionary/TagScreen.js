@@ -79,7 +79,7 @@ const TagScreen = () => {
   if (!loading) {
     return (
       <View style={styles.container}>
-        <View style={{ flex: 1, flexDirection: "row", top: 85 }}>
+        <View style={{ flex: 1, flexDirection: "row", top: 85,  }}>
           <Menu
             style={{ bottom: -67, left: 135, flex: 1 }}
             trigger={(triggerProps) => {
@@ -121,14 +121,15 @@ const TagScreen = () => {
         <View
           style={{
             position: "absolute",
-            top: 150,
+            top: 140,
             width: "100%",
             paddingLeft: 20,
             paddingRight: 20,
             flexDirection: "row",
-            gap: 20,
+            gap: 10,
+            alignItems:'center',
             flexWrap: "wrap",
-            justifyContent: "center",
+            left:30
           }}
         >
           {/* tags */}
@@ -138,11 +139,12 @@ const TagScreen = () => {
                 <View
                   style={{
                     backgroundColor: "#A678F2",
+                    width:100,
                     padding: 5,
                     paddingLeft: 10,
                     paddingRight: 10,
                     fontWeight: 600,
-                    borderRadius: 5,
+
                   }}
                 >
                   <Text style={{ fontSize: 16, color: "#f5f5f5" }}>
