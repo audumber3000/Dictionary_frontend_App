@@ -67,7 +67,7 @@ const LearnScreen = ({navigation}) => {
           <View style={styles.bottom}>
             <Text style={{fontSize:11}}>300 Word</Text>
             <FontAwesome5
-                    onPress={() => navigation.navigate("WordList")}
+                    onPress={() => navigation.navigate("SwipeList")}
                     style={{ textAlign: "right", left:80 }}
                     name="arrow-circle-right"
                     size={22}

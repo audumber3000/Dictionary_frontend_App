@@ -340,13 +340,13 @@ function AuthenticatedStack() {
         <Stack.Screen
           name="WordList"
           component={WordList}
-          options={{ headerShown: false }}
+          options={{ headerShown: false,animation:"slide_from_bottom" }}
         />
         {/* new added screen (Tag Screen) */}
         <Stack.Screen
           name="TagScreen"
           component={TagScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false,animation:"slide_from_bottom" }}
         />
         <Stack.Screen
           name="Resist"
@@ -363,9 +363,11 @@ function AuthenticatedStack() {
         <Stack.Screen
           name="Instructions"
           component={Instructions}
-
+          
           options={{
-            headerShown: false}}
+            headerShown: false,
+            animation:"slide_from_bottom"
+          }}
         />
         <Stack.Screen
           name="Result"
@@ -373,6 +375,7 @@ function AuthenticatedStack() {
 
           options={{
             headerTransparent: true,
+            animation:"slide_from_bottom",
             headerBackVisible: true,
             headerTintColor: 'black',
             headerTitle:''
@@ -382,7 +385,7 @@ function AuthenticatedStack() {
         <Stack.Screen
           name="SwipeList"
           component={SwipeList}
-          options={{ headerShown: false }}
+          options={{ headerShown: false,animation:"slide_from_bottom" }}
         />
 
         <Stack.Screen
