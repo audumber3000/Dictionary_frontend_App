@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { AntDesign } from '@expo/vector-icons'
 
 
-const Result = () => {
+const Result = ({ route }) => {
+    const { correctAnswers, totalQuestions } = route.params;
   return (
     <SafeAreaView style={styles.container}>
           <Text style={{color:'black',fontSize:19,fontWeight:'500'}}>Good Job</Text>
@@ -13,7 +14,7 @@ const Result = () => {
           <View style={styles.gridView}>
               <View style={styles.gridContainer}>
                   <Text>Correct Answer</Text>
-                  <Text style={styles.textBold}>7 questions</Text>
+                  <Text style={styles.textBold}>{correctAnswers} questions</Text>
               </View>
               <View style={styles.gridContainer}>
                   <Text>Completion</Text>

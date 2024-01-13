@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Pressable,
   Image,
+  Animated,
+  Easing
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
@@ -18,6 +20,8 @@ import { Audio } from "expo-av";
 
 const Quiz = ({navigation}) => {
   const [selectedImage, setSelectedImage] = useState(null);
+const fadeOutAnimation = useRef(new Animated.Value(1)).current;
+
 
   const [questionNum, setQuestionNum] = useState(0);
   const [showAnimation, setShowAnimation] = useState(false);
@@ -33,19 +37,52 @@ const Quiz = ({navigation}) => {
 
   const nextQuestion = () => {
     optionSelectSound();
-    const len = questionsArr.length;
-    setSelectedImage(null);
-    setQuestionNum((prevVal) => {
-      if (prevVal != len - 1) {
-        return prevVal + 1;
-      } else {
-         navigation.navigate("Result")
-        return 0;
-      }
+
+    Animated.timing(fadeOutAnimation, {
+      toValue: 0, // Target opacity is set to 0 (fully transparent)
+      duration: 500, // Animation duration in milliseconds
+      easing: Easing.linear, // Easing function for the animation (you can adjust this)
+      useNativeDriver: true, // Use the native driver for better performance
+    }).start(() => {
+      // Animation completed, reset opacity to 1 for the next question
+      fadeOutAnimation.setValue(1);
+
+      // Move to the next question
+      const len = questionsArr.length;
+      setSelectedImage(null);
+      setQuestionNum((prevVal) => {
+        if (prevVal !== len - 1) {
+          Animated.timing(fadeOutAnimation, {
+          toValue: 1, // Bring the opacity back to 1 (fully opaque)
+          duration: 500, // Animation duration for fade-in
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }).start();
+          return prevVal + 1;
+        } else {
+          navigation.navigate('Result', {
+            correctAnswers: calculateCorrectAnswers(),
+            totalQuestions: len,
+          });
+          return 0;
+        }
+      });
     });
-    // startTimer();
   };
 
+  const calculateCorrectAnswers = () => {
+
+    let correctCount = 0;
+    for (const question of questionsArr) {
+      const selectedOption = question.options.find(
+        (option) => option.id === selectedImage
+      );
+      if (selectedOption && selectedOption.correctOption) {
+        correctCount++;
+      }
+    }
+    return correctCount;
+  };
   const optionSelectSound = async () => {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync(
@@ -67,6 +104,7 @@ const Quiz = ({navigation}) => {
   }, [sound]);
 
   useEffect(() => {
+    let delay
     setTimer(100);
     setTimeSeconds(60);
     clearInterval(timerInterval.current);
@@ -86,8 +124,16 @@ const Quiz = ({navigation}) => {
         }
       });
     }, 1000);
-
-    return () => clearInterval(timerInterval);
+    if (showAnimation) {
+      delay = setTimeout(() => {
+        nextQuestion()
+      },5000)
+    }
+    return () => {
+      clearInterval(timerInterval);
+      clearTimeout(delay)
+    }
+    
   }, [questionNum]);
 
   return (
@@ -147,7 +193,7 @@ const Quiz = ({navigation}) => {
           clearInterval(timerInterval);
           navigation.goBack();
         }}
-        style={{ top: 80, right: 180 }}
+        style={{ top: 60, right: 180 }}
         name="arrowleft"
         size={25}
         color={"black"}
@@ -160,11 +206,11 @@ const Quiz = ({navigation}) => {
         backgroundColor="#d1d1d1"
         style={{
           position: "absolute",
-          top: 95,
+          top: 75,
           right: 25,
         }}
       />
-      <View style={{ position: "absolute", right: 33, top: 101 }}>
+      <View style={{ position: "absolute", right: 33, top: 82 }}>
         <Text>{timeSeconds}</Text>
       </View>
 
@@ -177,7 +223,7 @@ const Quiz = ({navigation}) => {
           left: "30%",
         }}
       >
-        <Text style={{ marginRight: 105, fontSize: 20, fontWeight: 600 }}>
+        <Text style={{ marginRight: 105,top:-23,left:15, fontSize: 20, fontWeight: 600 }}>
           Question {questionNum + 1}/{questionsArr.length}
         </Text>
       </View>
@@ -208,11 +254,8 @@ const Quiz = ({navigation}) => {
                   setShowAnimation(true);
                   setTimeout(() => {
                     setShowAnimation(false);
-                    if (questionNum === questionsArr.length - 1) {
-                      navigation.navigate('Result')
-                    } else {
-                      nextQuestion()
-                    }
+                    nextQuestion()
+                    
                   }, 1500);
                 } else {
                   refRBSheet.current.open();
