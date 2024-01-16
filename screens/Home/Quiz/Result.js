@@ -25,8 +25,8 @@ const Result = ({ route }) => {
                   <Text style={styles.textBold}>2</Text>
               </View>
               <View style={styles.gridContainer}>
-                  <Text>Incorrect Answer</Text>
-                  <Text style={styles.textBold}>1</Text>
+                  <Text>total question</Text>
+                  <Text style={styles.textBold}>{totalQuestions}</Text>
               </View>
 
           </View>

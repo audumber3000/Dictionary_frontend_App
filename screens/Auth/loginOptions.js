@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
-import { Pressable, StyleSheet, Text, Image, View, Button } from "react-native";
+import { Pressable, StyleSheet, Text, Image, View } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AuthContext } from "../../store/auth-context";
 import { useNavigation } from "@react-navigation/native";
-import { signin_with_google } from "../../api/auth";
+import { signinWithGoogle } from "../../api/auth";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -37,22 +37,8 @@ const LoginOptions = () => {
         if (!user && response?.type === "success") {
             setToken(response.authentication.accessToken);
             getUserInfo(response.authentication.accessToken);
-
-
         } else if (user) {
-            setUserInfo(user);
-            const data = await signin_with_google(user.email);
-            console.log("data === ", data)
-            if (data.code === 200) {
-                navigation.navigate("TopTab");
-            } else if (data.code === 201) {
-                await authCtx.authenticate(data.token.access.token);
-                
-                navigation.navigate("Dev");
-            } else {
-                console.log("Something went wrong with GoogleSignIn");
-            }
-
+            handleUserLogin(user);
         }
     };
 
@@ -66,36 +52,37 @@ const LoginOptions = () => {
 
         try {
             const response = await fetch(
-                "https://www.googleapis.com/userinfo/v2/me",
+                "https://dictionarybackendapp-production.up.railway.app/v1/auth/login/email",
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
 
             const user = await response.json();
-
-            await AsyncStorage.setItem("@user", JSON.stringify(user));
-            await AsyncStorage.setItem('name', user.name);
-            await AsyncStorage.setItem('email', user.email);
-
-            const data = await signin_with_google(user.email);
-            console.log("data === ", data)
-            if (data.code === 200) {
-                navigation.navigate("TopTab");
-            } else if (data.code === 201) {
-                await authCtx.authenticate(data.token.access.token);
-                navigation.navigate("Dev");
-            } else {
-                console.log("Something went wrong with GoogleSignIn");
-            }
-
-            console.log(user.email);
-            console.log(user.picture);
-            console.log(user.name);
-
-            setUserInfo(user);
+            await saveUserInfoLocally(user);
+            handleUserLogin(user);
         } catch (error) {
             console.error("Error fetching user info:", error);
+        }
+    };
+
+    const saveUserInfoLocally = async (user) => {
+        await AsyncStorage.setItem("@user", JSON.stringify(user));
+        await AsyncStorage.setItem('name', user.name);
+        await AsyncStorage.setItem('email', user.email);
+    };
+
+    const handleUserLogin = async (user) => {
+        setUserInfo(user);
+        const data = await signinWithGoogle(user.email);
+
+        if (data.code === 200) {
+            navigation.navigate("TopTab");
+        } else if (data.code === 201) {
+            await authCtx.authenticate(data.token.access.token);
+            navigation.navigate("Dev");
+        } else {
+            console.log("Something went wrong with GoogleSignIn");
         }
     };
 
@@ -104,9 +91,15 @@ const LoginOptions = () => {
         navigation.navigate("Login");
     };
 
-    const handleLoginWithGoogle = () => {
+    const handleLoginWithGoogle = async() => {
         refRBSheet.current.close();
-        promptAsync();
+        const result = await promptAsync()
+        if (result.type === "success") {
+            const { authentication } = result
+            setToken(authentication.accessToken)
+            setUserInfo(authentication.accessToken)
+        }
+
     };
 
     return (
@@ -140,11 +133,6 @@ const LoginOptions = () => {
                             }}
                         />
                     </Pressable>
-
-                    {/* <Button
-                        title="Remove local store"
-                        onPress={async () => await AsyncStorage.removeItem("@user")}
-                    /> */}
                 </View>
             </RBSheet>
         </View>
