@@ -366,7 +366,7 @@ function AuthenticatedStack() {
           
           options={{
             headerShown: false,
-            animation:"slide_from_bottom"
+            animation:"slide_from_right"
           }}
         />
         <Stack.Screen
@@ -375,7 +375,7 @@ function AuthenticatedStack() {
 
           options={{
             headerTransparent: true,
-            animation:"slide_from_bottom",
+            animation:"slide_from_right",
             headerBackVisible: true,
             headerTintColor: 'black',
             headerTitle:''

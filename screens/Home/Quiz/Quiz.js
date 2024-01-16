@@ -28,6 +28,7 @@ const fadeOutAnimation = useRef(new Animated.Value(1)).current;
   const [timer, setTimer] = useState(100);
   const [timeSeconds, setTimeSeconds] = useState(60);
   const [sound, setSound] = useState();
+  const [correctedques,setCorrectedques] =useState(0)
   // const [showSheet, setShowSheet] = useState(false);
   const sampleImage =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQShMOHBfPGb7D50_ZYOhDLdZl0mzLNr5Dayw&usqp=CAU";
@@ -73,13 +74,10 @@ const fadeOutAnimation = useRef(new Animated.Value(1)).current;
   const calculateCorrectAnswers = () => {
 
     let correctCount = 0;
+
     for (const question of questionsArr) {
-      const selectedOption = question.options.find(
-        (option) => option.id === selectedImage
-      );
-      if (selectedOption && selectedOption.correctOption) {
-        correctCount++;
-      }
+    setCorrectedques(question.map((e)=>e))
+      
     }
     return correctCount;
   };
