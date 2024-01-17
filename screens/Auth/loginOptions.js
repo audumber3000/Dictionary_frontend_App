@@ -4,10 +4,11 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AuthContext } from "../../store/auth-context";
 import { useNavigation } from "@react-navigation/native";
-import { signinWithGoogle } from "../../api/auth";
+import { signin_with_google } from "../../api/auth";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -33,53 +34,62 @@ const LoginOptions = () => {
 
     const handleEffect = async () => {
         const user = await getLocalUser();
-
-        if (!user && response?.type === "success") {
-            setToken(response.authentication.accessToken);
+        await AsyncStorage.removeItem("user")
+        console.log("user", user);
+        if (!user) {
+          if (response?.type === "success") {
+            console.log(response)
+            // setToken(response.authentication.accessToken);
             getUserInfo(response.authentication.accessToken);
-        } else if (user) {
-            handleUserLogin(user);
+          }
+        } else {
+          setUserInfo(user);
+          console.log("loaded locally");
         }
     };
 
-    const getLocalUser = async () => {
-        const data = await AsyncStorage.getItem("@user");
-        return data ? JSON.parse(data) : null;
-    };
+     const getLocalUser = async () => {
+    const data = await AsyncStorage.getItem("@user");
+    if (!data) return null;
+    return JSON.parse(data);
+  };
 
     const getUserInfo = async (token) => {
-        if (!token) return;
+        if (!token) {
+            console.warn("No valid token available.");
+            return;
+        }
 
         try {
             const response = await fetch(
-                "https://dictionarybackendapp-production.up.railway.app/v1/auth/login/email",
+                "https://www.googleapis.com/userinfo/v2/me",
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                  headers: { Authorization: `Bearer ${token}` },
                 }
-            );
+              );
 
             const user = await response.json();
-            await saveUserInfoLocally(user);
+            console.log("Google User : " , user)
+            console.log("After Save User Info Locally...")
+            setUserInfo(user);
             handleUserLogin(user);
         } catch (error) {
             console.error("Error fetching user info:", error);
         }
     };
 
-    const saveUserInfoLocally = async (user) => {
-        await AsyncStorage.setItem("@user", JSON.stringify(user));
+ 
+    const handleUserLogin = async (user) => {
         await AsyncStorage.setItem('name', user.name);
         await AsyncStorage.setItem('email', user.email);
-    };
 
-    const handleUserLogin = async (user) => {
-        setUserInfo(user);
-        const data = await signinWithGoogle(user.email);
-
+        const data = await signin_with_google(user.email);
+        console.log(data)
         if (data.code === 200) {
             navigation.navigate("TopTab");
         } else if (data.code === 201) {
-            await authCtx.authenticate(data.token.access.token);
+            authCtx.authenticate(data.token.access.token);
+            authCtx.authenticateUserId(data.data._id)
             navigation.navigate("Dev");
         } else {
             console.log("Something went wrong with GoogleSignIn");
@@ -91,15 +101,30 @@ const LoginOptions = () => {
         navigation.navigate("Login");
     };
 
-    const handleLoginWithGoogle = async() => {
+    const handleLoginWithGoogle = async () => {
         refRBSheet.current.close();
-        const result = await promptAsync()
-        if (result.type === "success") {
-            const { authentication } = result
-            setToken(authentication.accessToken)
-            setUserInfo(authentication.accessToken)
-        }
+        try {
+            await AsyncStorage.removeItem("@user")
+            const result = await promptAsync();
+            console.log("Google Auth Result:", result);
 
+        if (result.type === "success") {
+            const { authentication, params, url } = result;
+            console.log("Authentication details:", authentication);
+            console.log("Params:", params);
+            console.log("URL:", url);
+
+            // If you want to display this information in your UI, you can set it to state variables
+            // setToken(authentication.accessToken);
+            // setUserInfo(authentication.accessToken);
+        } else if (result.type === "cancel") {
+            console.warn("Authentication cancelled by user.");
+        } else {
+            console.error("Unknown result type:", result);
+        }
+        } catch (error) {
+            console.error("Error during Google login:", error);
+        }
     };
 
     return (

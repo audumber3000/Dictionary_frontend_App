@@ -31,19 +31,19 @@ export default function HomeScreen() {
   const [notificationCount, setNotificationCount] = useState(5); // Set the actual count as needed
   const [notificationPermission, setNotificationPermission] = useState(false);
 
-  // useEffect(() => {
-  //   const checkAndRequestContactPermission = async () => {
-  //     const { status } = await Contacts.getPermissionsAsync();
+  useEffect(() => {
+    const checkAndRequestContactPermission = async () => {
+      const { status } = await Contacts.getPermissionsAsync();
 
-  //     if (status !== "granted") {
-  //       // Permission not granted, open RBSheet to request permission
-  //       setTimeout(() => {
-  //         refRBSheet.current.open();
-  //       }, 2000);
-  //     }
-  //   };
-  //   checkAndRequestContactPermission();
-  // }, []);
+      if (status !== "granted") {
+        // Permission not granted, open RBSheet to request permission
+        setTimeout(() => {
+          refRBSheet.current.open();
+        }, 2000);
+      }
+    };
+    checkAndRequestContactPermission();
+  }, []);
 
   const context = useContext(AuthContext);
   console.log(context.token);

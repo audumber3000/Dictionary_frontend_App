@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { BackHandler, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+
 import { GlobalStyles } from "../constants/style";
 import Help from "../screens/Help";
 import Favorite from "../screens/FavoriteScreen";
@@ -29,6 +28,7 @@ import NotificationPermission from "../components/HomeScreenComp/notificationPer
 import ContactPermission from "../components/HomeScreenComp/contactPermission";
 import NewNotification from "../screens/NewNotification";
 import LoginOptions from "../screens/Auth/loginOptions";
+import googleLogin from "../screens/Auth/googleLogin";
 import LoginScreen from "../screens/Auth/login";
 import SignupScreen from "../screens/Auth/signup";
 import OTPPage from "../screens/Auth/otp";
@@ -37,11 +37,9 @@ import Quiz from "../screens/Home/Quiz/Quiz";
 import Instructions from "../screens/Home/Quiz/Instructions";
 import { BottomTabNavigationfun } from "./bottomTab";
 import { LeadBoard, TopTabNavigation } from "./topTab";
-import Result from "../screens/Home/Quiz/Result";
 const Stack = createNativeStackNavigator();
 
 function AuthStack() {
-  
   return (
     <Stack.Navigator
       initialRouteName="LoginOptions"
@@ -102,6 +100,12 @@ function AuthStack() {
       <Stack.Screen
         name="LoginOptions"
         component={LoginOptions}
+        options={{ headerShown: false }}
+      />
+
+<Stack.Screen
+        name="googleLogin"
+        component={googleLogin}
         options={{ headerShown: false }}
       />
 
@@ -326,6 +330,8 @@ function AuthenticatedStack() {
           component={ReportDamageStack}
           options={{ headerShown: false }}
         />
+
+        
         <Stack.Screen
           name="Service"
           component={ServiceStack}
@@ -340,13 +346,13 @@ function AuthenticatedStack() {
         <Stack.Screen
           name="WordList"
           component={WordList}
-          options={{ headerShown: false,animation:"slide_from_bottom" }}
+          options={{ headerShown: false }}
         />
         {/* new added screen (Tag Screen) */}
         <Stack.Screen
           name="TagScreen"
           component={TagScreen}
-          options={{ headerShown: false,animation:"slide_from_bottom" }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Resist"
@@ -363,29 +369,13 @@ function AuthenticatedStack() {
         <Stack.Screen
           name="Instructions"
           component={Instructions}
-          
-          options={{
-            headerShown: false,
-            animation:"slide_from_right"
-          }}
-        />
-        <Stack.Screen
-          name="Result"
-          component={Result}
-
-          options={{
-            headerTransparent: true,
-            animation:"slide_from_right",
-            headerBackVisible: true,
-            headerTintColor: 'black',
-            headerTitle:''
-          }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
           name="SwipeList"
           component={SwipeList}
-          options={{ headerShown: false,animation:"slide_from_bottom" }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen

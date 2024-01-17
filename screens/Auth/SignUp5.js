@@ -73,7 +73,7 @@ const SignUp5 = () => {
         console.log("Code 201");
         setIsLoading(false);
         await authCtx.authenticate(data.token.access.token);
-        authCtx.authenticateUserId(data._id);
+        authCtx.authenticateUserId(data.data._id);
         navigation.navigate("SignUp1");
         setProgress(progress + 0.2);
       } else {
@@ -115,18 +115,17 @@ const SignUp5 = () => {
 
   return (
     <View style={styles.container}>
-      <Progress.Bar
-        style={styles.progressBar}
-        progress={progress}
-        color={"#A780E8"}
-        width={360}
-        borderWidth={1}
-        borderColor={"#A780E8"}
-        unfilledColor={"white"}
-        height={12}
-        animationType="timing"
-      />
-      <Text style={styles.BarText}>Almost Done...</Text>
+       <Progress.Bar
+          style={styles.progressBar}
+          progress={progress}
+          color={"#8E44AD"}
+          width={350}
+          borderWidth={1}
+          borderColor={"#8E44AD"}
+          unfilledColor={"white"}
+          height={12}
+          animationType="timing"
+        />
       <Text style={styles.questionText}>Pick All Your Interested Topics!</Text>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -183,11 +182,11 @@ const SignUp5 = () => {
 
 const styles = StyleSheet.create({
   BarText: {
-    top: 80,
+    position: 'absolute',
+    top: 55, // Adjust the top position to align it below the progress bar
     lineHeight: 21,
     letterSpacing: -0.32,
-    alignItems: "center",
-    marginRight: 220,
+    alignSelf: 'center', // Aligns the text to the center
     fontSize: 16,
     fontWeight: "700",
     color: "#A780E8",
@@ -200,17 +199,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   progressBar: {
-    top: 65,
+    marginTop: 15,
     borderRadius: 10,
+    height: 12,
   },
   questionText: {
-    fontSize: 24,
-    fontWeight: "900",
-    lineHeight: 29.26,
-    marginVertical: 40,
-    paddingTop: 60,
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 20,
+    paddingTop: 50,
   },
   imageCardContainer: {
+    padding:10,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
@@ -289,15 +290,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    backgroundColor: "#6A0DAD",
-    height: 50,
-    width: "90%",
-    marginTop: 60,
-    bottom: 30,
-    borderRadius: 8,
+    backgroundColor: "#8E44AD",
+    width: 350,
+    height: 60,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "rgba(0, 1, 0, 1)",
+    marginTop: 20,
+    shadowColor: "rgba(0, 0, 0, 0.2)",
     shadowOpacity: 0.8,
     elevation: 6,
     shadowRadius: 15,
