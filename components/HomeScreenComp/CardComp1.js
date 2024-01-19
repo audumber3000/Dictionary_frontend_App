@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -14,7 +14,7 @@ import { TouchableOpacity } from "react-native";
 
 const baseFontSize = 20; // You can adjust this value as needed
 
-export default function CardComp1() {
+export default function CardComp1(props) {
   const navigation = useNavigation();
   const showToast = () => {
     console.log("Toast Message");
@@ -23,6 +23,9 @@ export default function CardComp1() {
       text1: "Word added to Favorites!",
     });
   };
+
+  const { apiData } = props;
+  // Use apiData in your component as needed
 
   return (
     <View style={styles.container}>
@@ -45,9 +48,15 @@ export default function CardComp1() {
             />
           </TouchableOpacity>
           <Text style={styles.cardHeader}>Word Of The Day!</Text>
-          <Text style={styles.cardText1}>Serendipity</Text>
+          <Text style={styles.cardText1}>
+            {apiData && apiData.wordOfTheDay && apiData.wordOfTheDay.word
+              ? apiData.wordOfTheDay.word
+              : "N/A"}
+          </Text>
           <Text style={styles.cardText2}>
-            A fortunate and unexpected discovery
+            {apiData && apiData.wordOfTheDay && apiData.wordOfTheDay.meaning
+              ? apiData.wordOfTheDay.meaning
+              : "N/A"}
           </Text>
         </View>
       </ImageBackground>

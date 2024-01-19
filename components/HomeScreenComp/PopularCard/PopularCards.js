@@ -2,7 +2,8 @@ import { View, Text, ScrollView, Image } from "react-native";
 import React from "react";
 import PopularCard1 from "./PopularCard1";
 
-const PopularCards = () => {
+const PopularCards = (props) => {
+  const { apiData } = props;
   return (
     <View
       style={{
@@ -33,30 +34,24 @@ const PopularCards = () => {
           contentContainerStyle={{ marginTop: 15, gap: 16 }}
         >
           {/* Card code */}
+          {apiData.PopularWordCategory && apiData.PopularWordCategory[0] && (
           <PopularCard1
-            cardImage={require("../../../assets/popular_1.png")}
-            cardText={"Unstop's Creative Hackathon"}
+            cardImage={apiData.PopularWordCategory? apiData.PopularWordCategory[0].image : "https://d3nn873nee648n.cloudfront.net/900x600/20732/300-SM1072581.jpg"}
+            cardText={apiData.PopularWordCategory ? apiData.PopularWordCategory[0].name : "Unstop's Creative Hackathon"}
             isLatest={true}
             views={"5,800"} // One card has user views
+            apiData={apiData.PopularWordCategory ? apiData.PopularWordCategory[0].wordsList : null}
           />
+          )}
+          {apiData.PopularWordCategory && apiData.PopularWordCategory[1] && (
           <PopularCard1
-            cardImage={require("../../../assets/popular_2.png")}
-            cardText={"Masterclass: Solving Business Strategy Cases"}
-            isLatest={false}
-            views={"2,600"}
-          />
-          <PopularCard1
-            cardImage={require("../../../assets/popular_1.png")}
-            cardText={"Unstop's Creative Hackathon"}
+            cardImage={apiData.PopularWordCategory? apiData.PopularWordCategory[1].image : "https://d3nn873nee648n.cloudfront.net/900x600/20732/300-SM1072581.jpg"}
+            cardText={apiData.PopularWordCategory? apiData.PopularWordCategory[1].name : "Unstop's Creative Hackathon"}
             isLatest={true}
-            views={"5,800"}
+            views={"5,800"} // One card has user views
+            apiData={apiData.PopularWordCategory ? apiData.PopularWordCategory[1].wordsList : null}
           />
-          <PopularCard1
-            cardImage={require("../../../assets/popular_2.png")}
-            cardText={"Masterclass: Solving Business Strategy Cases"}
-            isLatest={false}
-            views={"2,600"}
-          />
+          )}
         </ScrollView>
       </View>
     </View>

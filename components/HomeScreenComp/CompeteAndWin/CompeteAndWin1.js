@@ -3,7 +3,9 @@ import React from "react";
 import PopularCard1 from "../PopularCard/PopularCard1";
 import CompeteAndWinCard from "./CompeteAndWinCard";
 
-const CompeteAndWin1 = () => {
+const CompeteAndWin1 = (props) => {
+    const { apiData } = props;
+
   return (
     <View
       style={{
@@ -37,7 +39,7 @@ const CompeteAndWin1 = () => {
           <CompeteAndWinCard
             backgroundId={1}
             cardLogo={require("../../../assets/Compete_Logo_1.png")}
-            cardTitle1={"Monomousumi Monthl..."}
+            cardTitle1={apiData.competitionData && apiData.competitionData[0] ? apiData.competitionData[0].text_heading : "Default Title"}
             cardTitle2={"Monomousumi"}
             type={"Offline"}
             users={"3,300"}
@@ -45,7 +47,7 @@ const CompeteAndWin1 = () => {
           <CompeteAndWinCard
             backgroundId={2}
             cardLogo={require("../../../assets/Compete_Logo_2.png")}
-            cardTitle1={"Intuit - Prepare for the..."}
+            cardTitle1={apiData.competitionData && apiData.competitionData[1] ? apiData.competitionData[1].text_heading : "Default Title"}
             cardTitle2={"Intuit"}
             type={"Online"}
             users={"4,400"}
@@ -53,7 +55,7 @@ const CompeteAndWin1 = () => {
           <CompeteAndWinCard
             backgroundId={1}
             cardLogo={require("../../../assets/Compete_Logo_1.png")}
-            cardTitle1={"Monomousumi Monthl..."}
+            cardTitle1={apiData.competitionData && apiData.competitionData[2] ? apiData.competitionData[2].text_heading : "Default Title"}
             cardTitle2={"Monomousumi"}
             type={"Offline"}
             users={"3,300"}

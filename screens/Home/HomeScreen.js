@@ -4,9 +4,9 @@ import {
   View,
   Image,
   ScrollView,
-  Pressable,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import SearchComp from "../../components/HomeScreenComp/SearchComp";
 import CardComp from "../../components/HomeScreenComp/CardComp1";
@@ -14,51 +14,62 @@ import CardComp2 from "../../components/HomeScreenComp/CardComp2";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { useNavigation } from "@react-navigation/native";
 import RBSheet from "react-native-raw-bottom-sheet";
-import ContactPermission from "../../components/HomeScreenComp/contactPermission";
-import NotificationPermission from "../../components/HomeScreenComp/notificationPermission";
-import NewNotify from "../NewNotification";
 import * as Contacts from "expo-contacts";
-import * as Notifications from "expo-notifications";
+import axios from "axios";
 
 import SlideAlert from "../../components/TostMessage/SlideAlert";
 import PopularCards from "../../components/HomeScreenComp/PopularCard/PopularCards";
 import { AuthContext } from "../../store/auth-context";
 
 export default function HomeScreen() {
+  const [apiData, setapiData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const refRBSheet = useRef();
   const navigation = useNavigation();
-
-  const [notificationCount, setNotificationCount] = useState(5); // Set the actual count as needed
-  const [notificationPermission, setNotificationPermission] = useState(false);
-
-  useEffect(() => {
-    const checkAndRequestContactPermission = async () => {
-      const { status } = await Contacts.getPermissionsAsync();
-
-      if (status !== "granted") {
-        // Permission not granted, open RBSheet to request permission
-        setTimeout(() => {
-          refRBSheet.current.open();
-        }, 2000);
-      }
-    };
-    checkAndRequestContactPermission();
-  }, []);
 
   const context = useContext(AuthContext);
   console.log(context.token);
 
-  const toggleBottomSheet = () => {
-    if (refRBSheet.current) {
-      refRBSheet.current.close();
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/home/653a65f6113cf91090bf6192",
+          {
+            headers: {
+              Authorization: `Bearer ${context.token}`,
+            },
+          }
+        );
 
-  const handleContinue = () => {
-    console.log("Continue");
-    // Implement your logic after the user has given contact permission and continued
-    // For example, navigate to the next screen
-    navigation.navigate("NextScreen");
+        if (!response.data || !response.data.data) {
+          throw new Error("Invalid response data");
+        }
+
+        setapiData(response.data.data);
+        console.log(response.data.data);
+        // console.log(apiData);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [context.token]);
+
+  const renderContent = () => {
+    if (loading) {
+      return <ActivityIndicator size="large" color="#FFFFFF" />;
+    }
+
+    if (error) {
+      return <Text>Error: {error}</Text>;
+    }
+    
   };
 
   return (
@@ -80,9 +91,11 @@ export default function HomeScreen() {
           style={styles.bellIcon}
         >
           <Fontisto name="bell-alt" size={40} color={"white"} />
-          {notificationCount > 0 && (
+          {apiData.length > 0 && apiData[0].totalWords > 0 && (
             <View style={styles.notificationBadge}>
-              <Text style={styles.notificationText}>{notificationCount}</Text>
+              <Text style={styles.notificationText}>
+                {apiData[0].totalWords}
+              </Text>
             </View>
           )}
         </TouchableOpacity>
@@ -93,9 +106,9 @@ export default function HomeScreen() {
 
         <SearchComp />
         <View style={styles.cardcontainer}>
-          <CardComp />
-          <PopularCards />
-          <CardComp2 />
+          <CardComp apiData={apiData}/>
+          <PopularCards apiData={apiData}/>
+          <CardComp2 apiData={apiData}/>
           {/* <CardComp2 /> */}
         </View>
 
@@ -119,7 +132,7 @@ export default function HomeScreen() {
             },
           }}
         >
-          <ContactPermission onClose={toggleBottomSheet} />
+          {/* Implement your ContactPermission component here */}
         </RBSheet>
       </View>
     </ScrollView>
