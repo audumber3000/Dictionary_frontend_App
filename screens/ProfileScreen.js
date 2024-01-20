@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import {
   View,
   Text,
@@ -47,6 +47,8 @@ function ProfileScreen() {
 
   const { token } = useContext(AuthContext);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       console.log("Fetching");
@@ -56,20 +58,22 @@ function ProfileScreen() {
 
         if (!token) {
           console.error("Token not found in AsyncStorage");
+          setLoading(false);
           return;
         }
 
-        const response = await profileAPI(token)   // profile page GET API
+        const response = await profileAPI(token); // profile page GET API
 
         console.log(response.data);
 
         const newData = response.data;
         setData(newData);
-        // console.log(newData)
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false whether success or error
+        console.log("Fetching complete");
       }
-      console.log("Fetching complete");
     };
 
     fetchData();
@@ -257,6 +261,13 @@ function ProfileScreen() {
 
   return (
     <>
+    {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+        <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+
+      ) : (
       <NavigationContainer independent={true}>
         <NativeBaseProvider>
           <View style={styles.blueBackground}>
@@ -825,6 +836,7 @@ function ProfileScreen() {
           </ScrollView>
         </NativeBaseProvider>
       </NavigationContainer>
+      )}
     </>
   );
 }

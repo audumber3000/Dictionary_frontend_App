@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
@@ -32,6 +32,14 @@ export default function TopCards() {
   }, []);
 
   return (
+    <>
+    {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
+
+        <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+
+      ) : (
     <View
       style={{
         flex: 1,
@@ -191,6 +199,8 @@ export default function TopCards() {
         </LinearGradient>
       ))}
     </View>
+      )}
+    </>
   );
 }
 
