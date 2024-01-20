@@ -31,38 +31,20 @@ const CompeteAndWin1 = (props) => {
 
       {/* Horizontal sliding cards */}
       <View style={{ width: "100%" }}>
-        <ScrollView
-          horizontal
-          contentContainerStyle={{ marginTop: 15, gap: 16 }}
-        >
-          {/* Card components here */}
+      <ScrollView horizontal contentContainerStyle={{ marginTop: 15, gap: 16 }}>
+      {apiData.competitionData &&
+        apiData.competitionData.map((competition, index) => (
           <CompeteAndWinCard
-            backgroundId={1}
-            cardLogo={require("../../../assets/Compete_Logo_1.png")}
-            cardTitle1={apiData.competitionData && apiData.competitionData[0] ? apiData.competitionData[0].text_heading : "Default Title"}
-            cardTitle2={"Monomousumi"}
-            type={"Offline"}
-            users={"3,300"}
+            key={index}
+            backgroundId={competition.backgroundId || 1}
+            cardLogo={competition.cardLogo || require("../../../assets/Compete_Logo_1.png")}
+            cardTitle1={competition.text_heading || "Default Title"}
+            cardTitle2={competition.cardTitle2 || "Monomousumi"}
+            type={competition.type || "Offline"}
+            users={competition.users || "3,300"}
           />
-          <CompeteAndWinCard
-            backgroundId={2}
-            cardLogo={require("../../../assets/Compete_Logo_2.png")}
-            cardTitle1={apiData.competitionData && apiData.competitionData[1] ? apiData.competitionData[1].text_heading : "Default Title"}
-            cardTitle2={"Intuit"}
-            type={"Online"}
-            users={"4,400"}
-          />
-          <CompeteAndWinCard
-            backgroundId={1}
-            cardLogo={require("../../../assets/Compete_Logo_1.png")}
-            cardTitle1={apiData.competitionData && apiData.competitionData[2] ? apiData.competitionData[2].text_heading : "Default Title"}
-            cardTitle2={"Monomousumi"}
-            type={"Offline"}
-            users={"3,300"}
-          />
-
-          {/* <CompeteAndWinCard /> */}
-        </ScrollView>
+        ))}
+    </ScrollView>
       </View>
     </View>
   );

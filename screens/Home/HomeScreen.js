@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import * as Contacts from "expo-contacts";
 import axios from "axios";
+import fetchData from "../../api/HomeAPI"
 
 import SlideAlert from "../../components/TostMessage/SlideAlert";
 import PopularCards from "../../components/HomeScreenComp/PopularCard/PopularCards";
@@ -33,24 +34,11 @@ export default function HomeScreen() {
   console.log(context.token);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataFromApi = async () => {
       try {
-        const response = await axios.get(
-          "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/home/653a65f6113cf91090bf6192",
-          {
-            headers: {
-              Authorization: `Bearer ${context.token}`,
-            },
-          }
-        );
-
-        if (!response.data || !response.data.data) {
-          throw new Error("Invalid response data");
-        }
-
-        setapiData(response.data.data);
-        console.log(response.data.data);
-        // console.log(apiData);
+        const data = await fetchData(context.token);
+        setapiData(data);
+        console.log(data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -58,7 +46,7 @@ export default function HomeScreen() {
       }
     };
 
-    fetchData();
+    fetchDataFromApi();
   }, [context.token]);
 
   const renderContent = () => {
