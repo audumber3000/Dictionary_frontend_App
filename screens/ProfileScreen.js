@@ -35,6 +35,7 @@ import { profileAPI } from "../api/profileScreenAPI";
 
 function ProfileScreen() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
@@ -47,32 +48,24 @@ function ProfileScreen() {
 
   const { token } = useContext(AuthContext);
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching");
       try {
         // Retrieve token from AsyncStorage
         // const token = await AsyncStorage.getItem("token");
 
         if (!token) {
           console.error("Token not found in AsyncStorage");
-          setLoading(false);
           return;
         }
 
-        const response = await profileAPI(token); // profile page GET API
-
-        console.log(response.data);
-
+        const response = await profileAPI(token)   // profile page GET API
         const newData = response.data;
         setData(newData);
+        setLoading(false);
+        // console.log(newData)
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Set loading to false whether success or error
-        console.log("Fetching complete");
       }
     };
 
@@ -261,8 +254,8 @@ function ProfileScreen() {
 
   return (
     <>
-    {loading ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
 
         <ActivityIndicator size="large" color="#0000ff" />
         </View>
