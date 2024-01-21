@@ -3,12 +3,14 @@ import React from "react";
 import PlayAndProg from "./PlayAndProgress/PlayAndProg";
 import CompeteAndWin1 from "./CompeteAndWin/CompeteAndWin1";
 
-export default function CardComp2() {
+export default function CardComp2(props) {
   const color = ["rgba(166, 120, 242, 0.2)", "rgba(79, 79, 79, 0.1)"];
+  const { apiData } = props;
+
   return (
     <View style={styles.container}>
       {/* Compete and Win Section */}
-      <CompeteAndWin1 />
+      <CompeteAndWin1 apiData={apiData}/>
 
       {/* Play annd Progress Card */}
       <View style={styles.container3}>

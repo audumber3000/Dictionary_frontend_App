@@ -11,14 +11,16 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Shadow } from "react-native-shadow-2";
 import { useNavigation } from "@react-navigation/native";
 
-const PopularCard1 = ({ cardImage, cardText, isLatest, views }) => {
+const PopularCard1 = ({ cardImage, cardText, isLatest, views, apiData }) => {
+  
   const baseFontSize = 16;
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("WordList");
+        navigation.navigate("WordList", { apiData });
+        console.log(apiData);
       }}
     >
       <Shadow distance={2} containerStyle={{ marginLeft: 1 }}>

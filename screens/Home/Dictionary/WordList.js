@@ -6,6 +6,8 @@ import {
   Image,
   Pressable,
 } from "react-native";
+import { useRoute } from '@react-navigation/native';
+
 import React, { useState, useEffect, useContext } from "react";
 import Feed from "../../../LakshitModule/Feed";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -21,6 +23,8 @@ import { AuthContext } from "../../../store/auth-context";
 import { swipeListAPI } from "../../../api/LearnScreenAPI";
 
 export default function WordList() {
+  const { params } = useRoute();
+  const { apiData } = params;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -104,7 +108,7 @@ export default function WordList() {
             size={24}
             color={"black"}
           />
-          <Text style={styles.headertext}>Word list</Text>
+          <Text style={styles.headertext}>apiData</Text>
         </View>
         <View style={{ flex: 4, bottom: 40 }}>
           {loading && <Text>Loading</Text>}

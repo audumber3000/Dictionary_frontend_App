@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
 import { useNavigation } from "@react-navigation/native";
 
 export default function SearchComp() {
-  const words = ["Word", "Vocabulary", "Language"]; // Replace with your desired words
+  const words = ["Word", "Vocabulary", "Language"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("Search for Words");
+  const [userName, setUserName] = useState(""); // State to store the user's name
 
   const navigation = useNavigation();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
-    }, 3000); // Change the word every second
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -22,11 +24,27 @@ export default function SearchComp() {
     setDisplayedText(`Search for ${words[currentWordIndex]}`);
   }, [currentWordIndex]);
 
+  useEffect(() => {
+    // Retrieve the user's name from AsyncStorage
+    const fetchUserName = async () => {
+      try {
+        const storedName = await AsyncStorage.getItem("name");
+        if (storedName) {
+          setUserName(storedName);
+        }
+      } catch (error) {
+        console.error("Error fetching user's name:", error);
+      }
+    };
+
+    fetchUserName();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerTextContainer}>
         <Text style={styles.helloText}>Hello,</Text>
-        <Text style={styles.saranshText}>Saransh!</Text>
+        <Text style={styles.saranshText}>{userName || "Guest"}!</Text>
       </View>
       <Text style={styles.text}>
         Let's begin your journey to amplify English.
@@ -44,14 +62,13 @@ export default function SearchComp() {
   );
 }
 
-const baseFontSize = 20; // Define a base font size (adjust as needed)
+const baseFontSize = 20;
 const styles = StyleSheet.create({
   container: {
     position: "relative",
     paddingTop: 200,
     padding: 20,
   },
-
   headerTextContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -80,7 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     marginTop: 10,
-    gap: 12
+    gap: 12,
   },
   searchIcon: {
     padding: 10,
