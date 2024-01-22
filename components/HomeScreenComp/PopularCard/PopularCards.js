@@ -34,8 +34,8 @@ const PopularCards = (props) => {
         apiData.PopularWordCategory.map((category, index) => (
           <View key={index}>
             <PopularCard1
-              cardImage={category.image || "https://d3nn873nee648n.cloudfront.net/900x600/20732/300-SM1072581.jpg"}
-              cardText={category.name || "Unstop's Creative Hackathon"}
+              cardImage={category.image }
+              cardText={category.name }
               isLatest={true}
               views={"5,800"} // One card has user views
               apiData={category.wordsList || null}

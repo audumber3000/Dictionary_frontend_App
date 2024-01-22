@@ -2,11 +2,14 @@
 // ApiService.js
 
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const fetchData = async (token) => {
   try {
+    const userid = await AsyncStorage.getItem('userid')
+    console.log("Homescreen",userid)
     const response = await axios.get(
-      "https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/home/653a65f6113cf91090bf6192",
+      `https://dictionarybackendapp-production.up.railway.app/v1/wordifyme/home/${userid}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

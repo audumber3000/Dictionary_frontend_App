@@ -36,9 +36,9 @@ const PopularCard1 = ({ cardImage, cardText, isLatest, views, apiData }) => {
           {/* Image */}
           <View style={{ width: "100%", height: 97 }}>
             <ImageBackground
-              // width={"100%"}
-              // height={"100%"}
-              source={cardImage}
+              width={"100%"}
+              height={"100%"}
+              source={{ uri: cardImage}}
               resizeMode="cover"
               style={{ flex: 1 }}
             ></ImageBackground>

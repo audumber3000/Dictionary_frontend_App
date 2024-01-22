@@ -37,6 +37,7 @@ export default function HomeScreen() {
     const fetchDataFromApi = async () => {
       try {
         const data = await fetchData(context.token);
+        console.log("Home Data: ", data)
         setapiData(data);
         console.log(data);
       } catch (error) {

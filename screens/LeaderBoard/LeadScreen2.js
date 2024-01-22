@@ -55,10 +55,14 @@ export default function LeadScreen2() {
               <Text style={{fontWeight:"900"}}>Month</Text>
             </TouchableOpacity>
           </View>
-          <TopCards />
-          <CurveContainer />
+          {/* <TopCards />
+          <CurveContainer /> */}
+           
         </View>
       </ScrollView>
+      <View style={styles.contentContainer}>
+          <Image style={styles.noDataImage} source={require('../../assets/no-data-found.png')} />
+          </View>
     </View>
   );
 }
@@ -67,6 +71,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#966DDA",
+  },
+  noDataImage: {
+    //resizeMode: 'contain',  // Use 'contain' to fit the image within the container
+    width: '100%',  // Adjust the width based on your preference
+    height: '150%', // Adjust the height based on your preference
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'flex-end', // Align content to the bottom
+    marginBottom: 20, // Adjust the marginBottom based on your preference
   },
   navcard: {
     width: 330,
