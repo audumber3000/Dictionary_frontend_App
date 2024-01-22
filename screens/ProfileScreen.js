@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import {
   View,
   Text,
@@ -35,6 +35,7 @@ import { profileAPI } from "../api/profileScreenAPI";
 
 function ProfileScreen() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
@@ -49,7 +50,6 @@ function ProfileScreen() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching");
       try {
         // Retrieve token from AsyncStorage
         // const token = await AsyncStorage.getItem("token");
@@ -60,16 +60,13 @@ function ProfileScreen() {
         }
 
         const response = await profileAPI(token)   // profile page GET API
-
-        console.log(response.data);
-
         const newData = response.data;
         setData(newData);
+        setLoading(false);
         // console.log(newData)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-      console.log("Fetching complete");
     };
 
     fetchData();
@@ -257,6 +254,13 @@ function ProfileScreen() {
 
   return (
     <>
+      {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
+
+        <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+
+      ) : (
       <NavigationContainer independent={true}>
         <NativeBaseProvider>
           <View style={styles.blueBackground}>
@@ -825,6 +829,7 @@ function ProfileScreen() {
           </ScrollView>
         </NativeBaseProvider>
       </NavigationContainer>
+      )}
     </>
   );
 }

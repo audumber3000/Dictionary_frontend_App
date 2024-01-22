@@ -29,16 +29,15 @@ export default function HomeScreen() {
 
   const refRBSheet = useRef();
   const navigation = useNavigation();
+  
 
   const context = useContext(AuthContext);
-  console.log(context.token);
 
   useEffect(() => {
-    const fetchDataFromApi = async () => {
+    const fetchHomeData = async () => {
       try {
         const data = await fetchData(context.token);
         setapiData(data);
-        console.log(data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -46,7 +45,7 @@ export default function HomeScreen() {
       }
     };
 
-    fetchDataFromApi();
+    fetchHomeData();
   }, [context.token]);
 
   const renderContent = () => {
@@ -61,6 +60,14 @@ export default function HomeScreen() {
   };
 
   return (
+    <>
+    {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
+
+        <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+
+      ) : (
     <ScrollView
       showsVerticalScrollIndicator={false}
       horizontal={false}
@@ -124,6 +131,8 @@ export default function HomeScreen() {
         </RBSheet>
       </View>
     </ScrollView>
+      )}
+      </>
   );
 }
 
