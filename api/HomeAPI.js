@@ -2,7 +2,6 @@
 // ApiService.js
 
 import axios from "axios";
-
 const fetchData = async (token) => {
   try {
     const response = await axios.get(
@@ -23,5 +22,4 @@ const fetchData = async (token) => {
     throw new Error(error.message);
   }
 };
-
 export default fetchData;

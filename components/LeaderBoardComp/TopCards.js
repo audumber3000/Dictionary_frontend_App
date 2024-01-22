@@ -44,7 +44,7 @@ export default function TopCards(props) {
         </View>
 
       ) : (
-    <View
+        <View
       style={{
         flex: 1,
         flexDirection: "row",
@@ -75,7 +75,7 @@ export default function TopCards(props) {
               style={{ width: 65, height: 65 }}
               source={require("../../assets/profile.png")}
             />
-            <Text style={styles.badge1}>2</Text>
+            <Text style={styles.badge2}>2</Text>
             <Text
               style={{
                 fontSize: 10,
@@ -127,7 +127,7 @@ export default function TopCards(props) {
               style={{ width: 99, height: 99, bottom: 21 }}
               source={require("../../assets/profile.png")}
             />
-            <Text style={styles.badge3}>1</Text>
+            <Text style={styles.badge1}>1</Text>
             <Text
               style={{
                 fontSize: 13,
@@ -241,8 +241,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "900",
     color: "white",
-    left: 25,
-    bottom: 8,
+    left: 40,
+    bottom: 32,
   },
   badge2: {
     height: 18,
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "900",
     color: "white",
-    left: 40,
-    bottom: 32,
+    left: 27,
+    bottom: 11,
   },
 });
