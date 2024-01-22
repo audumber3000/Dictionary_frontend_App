@@ -1,11 +1,12 @@
 import {StyleSheet,Text,View,TouchableOpacity,ScrollView,Image} from "react-native";
-import React from "react";
+import {React,useState} from "react";
 import { useNavigation } from "@react-navigation/native";
 import TopCards from "../../components/LeaderBoardComp/TopCards";
 import CurveContainer from "../../components/LeaderBoardComp/CurvContainer";
 
 export default function LeadScreen3() {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "flex-end", right: 10 }}>

@@ -5,15 +5,30 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  ActivityIndicator
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import TopCards from "../../components/LeaderBoardComp/TopCards";
 import CurveContainer from "../../components/LeaderBoardComp/CurvContainer";
 
 export default function LeadScreen1() {
+  const [loading, setLoading] = useState(true);
+  const setLoadingFalse=()=>{
+    setLoading(false);
+    console.log("done passing");
+  }
   const navigation = useNavigation();
   return (
+    <>
+    {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
+
+        <ActivityIndicator size="large" color="#0000ff" />
+        <TopCards setLoadingFalse={setLoadingFalse} />
+
+        </View>
+      ) : (
     <View style={styles.container}>
       <View style={{ alignItems: "flex-end", right: 10 }}>
         <Image
@@ -63,11 +78,13 @@ export default function LeadScreen1() {
               <Text style={{ fontWeight: "900" }}>Month</Text>
             </TouchableOpacity>
           </View>
-          <TopCards />
+          <TopCards setLoadingFalse={setLoadingFalse} />
           <CurveContainer />
         </View>
       </ScrollView>
     </View>
+      )}
+      </>
   );
 }
 

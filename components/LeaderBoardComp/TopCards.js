@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { leaderBoard } from "../../api/LeaderBoardAPI";
 
-export default function TopCards() {
+export default function TopCards(props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,9 +22,13 @@ export default function TopCards() {
         const newData = response.data.data;
         setData(newData);
         setLoading(false);
+        props.setLoadingFalse();
+
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
+        props.setLoadingFalse();
+
       }
     };
 
@@ -32,6 +36,14 @@ export default function TopCards() {
   }, []);
 
   return (
+    <>
+    {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
+
+        <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+
+      ) : (
     <View
       style={{
         flex: 1,
@@ -191,6 +203,8 @@ export default function TopCards() {
         </LinearGradient>
       ))}
     </View>
+      )}
+    </>
   );
 }
 
@@ -236,18 +250,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6A14A",
     borderRadius: 50,
     textAlign: "center",
-    fontSize: 14,
-    fontWeight: "900",
-    color: "white",
-    left: 25,
-    bottom: 8,
-  },
-  badge3: {
-    height: 20,
-    width: 20,
-    backgroundColor: "#FED003",
-    borderRadius: 50,
-    textAlign: "center",
+   textAlign: "center",
     fontSize: 14,
     fontWeight: "900",
     color: "white",
