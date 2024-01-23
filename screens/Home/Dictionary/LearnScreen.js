@@ -6,6 +6,7 @@ import Loading from './Loading';
 import { AuthContext } from '../../../store/auth-context';
 import * as Progress from "react-native-progress";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { Button } from 'native-base';
 const LearnScreen = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,8 @@ const LearnScreen = ({navigation}) => {
 
   const RenderItem = ({ item }) => {
     return (
+      <>
+<Button onPress={() => navigation.navigate("SwipeList")} style={{ backgroundColor: 'white' }}>
       <View style={styles.flatContainer}>
         <View style={styles.cardContainer}>
           <View style={styles.flatListImg}>
@@ -55,7 +58,7 @@ const LearnScreen = ({navigation}) => {
                     style={{top:-8}}
                     progress={item.progress}
                     color={"#A780E8"}
-                    width={150}
+                    width={120}
                     borderWidth={1}
                     borderColor={"#A780E8"}
                     unfilledColor={"white"}
@@ -66,19 +69,23 @@ const LearnScreen = ({navigation}) => {
           />
           <View style={styles.bottom}>
             <Text style={{fontSize:11}}>300 Word</Text>
+            
             <FontAwesome5
                     onPress={() => navigation.navigate("SwipeList")}
-                    style={{ textAlign: "right", left:80 }}
+                    style={{ textAlign: "right", left:47 }}
                     name="arrow-circle-right"
                     size={22}
                     color={"#8F6ACD"}
                   />
           </View>
           </View>
-          
         </View>
           </View>
       </View>
+      
+      </Button>
+      
+      </>
     );
   };
 
@@ -238,7 +245,8 @@ const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: 'white',
     width: '90%',
-    margin: 10,
+    marginRight: 20,
+    marginLeft: 20,
     padding: 10,
     borderRadius: 10,
     shadowColor: '#000',

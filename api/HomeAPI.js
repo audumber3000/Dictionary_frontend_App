@@ -26,5 +26,4 @@ const fetchData = async (token) => {
     throw new Error(error.message);
   }
 };
-
 export default fetchData;
