@@ -34,8 +34,8 @@ export default function CurveContainer() {
         nestedScrollEnabled={true}
         horizontal={false}
       >
-        <View style={{ marginBottom: 210 }}>
-          {data.slice(3, 12).map((item) => (
+        <View style={{ marginBottom: 275 }}>
+          {data.slice(3, 12).map((item,index) => (
             <View key={item._id} style={styles.listcard}>
               <View
                 style={{
@@ -52,7 +52,7 @@ export default function CurveContainer() {
                     fontWeight: "bold",
                   }}
                 >
-                  {item.userId}
+                  {index+4}
                 </Text>
                 <Image
                   style={styles.cardimage}
