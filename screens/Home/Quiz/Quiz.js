@@ -8,7 +8,8 @@ import {
   Pressable,
   Image,
   Animated,
-  Easing
+  Easing,
+  BackHandler
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
@@ -186,7 +187,7 @@ const fadeOutAnimation = useRef(new Animated.Value(1)).current;
           </View>
         </View>
       </RBSheet>
-      <AntDesign
+      {/* <AntDesign
         onPress={() => {
           clearInterval(timerInterval);
           navigation.goBack();
@@ -207,7 +208,7 @@ const fadeOutAnimation = useRef(new Animated.Value(1)).current;
           top: 75,
           right: 25,
         }}
-      />
+      /> */}
       <View style={{ position: "absolute", right: 33, top: 82 }}>
         <Text>{timeSeconds}</Text>
       </View>

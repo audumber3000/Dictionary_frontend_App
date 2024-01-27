@@ -254,13 +254,13 @@ function ProfileScreen() {
 
   return (
     <>
-      {loading ? (
+      {/* {loading ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
 
         <ActivityIndicator size="large" color="#0000ff" />
         </View>
 
-      ) : (
+      ) : ( */}
       <NavigationContainer independent={true}>
         <NativeBaseProvider>
           <View style={styles.blueBackground}>
@@ -829,7 +829,7 @@ function ProfileScreen() {
           </ScrollView>
         </NativeBaseProvider>
       </NavigationContainer>
-      )}
+      {/* )} */}
     </>
   );
 }
