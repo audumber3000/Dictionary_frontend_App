@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
-import { Pressable, StyleSheet, Text, Image, View } from "react-native";
+import { Pressable, StyleSheet, Text, Image, View, ImageBackground } from "react-native"; // Import ImageBackground
 import RBSheet from "react-native-raw-bottom-sheet";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AuthContext } from "../../store/auth-context";
@@ -9,6 +9,7 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { TouchableRipple } from 'react-native-paper';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -34,25 +35,24 @@ const LoginOptions = () => {
 
     const handleEffect = async () => {
         const user = await getLocalUser();
-        await AsyncStorage.removeItem("user")
+        await AsyncStorage.removeItem("user");
         console.log("user", user);
         if (!user) {
-          if (response?.type === "success") {
-            console.log(response)
-            // setToken(response.authentication.accessToken);
-            getUserInfo(response.authentication.accessToken);
-          }
+            if (response?.type === "success") {
+                console.log(response);
+                getUserInfo(response.authentication.accessToken);
+            }
         } else {
-          setUserInfo(user);
-          console.log("loaded locally");
+            setUserInfo(user);
+            console.log("loaded locally");
         }
     };
 
-     const getLocalUser = async () => {
-    const data = await AsyncStorage.getItem("@user");
-    if (!data) return null;
-    return JSON.parse(data);
-  };
+    const getLocalUser = async () => {
+        const data = await AsyncStorage.getItem("@user");
+        if (!data) return null;
+        return JSON.parse(data);
+    };
 
     const getUserInfo = async (token) => {
         if (!token) {
@@ -64,13 +64,13 @@ const LoginOptions = () => {
             const response = await fetch(
                 "https://www.googleapis.com/userinfo/v2/me",
                 {
-                  headers: { Authorization: `Bearer ${token}` },
+                    headers: { Authorization: `Bearer ${token}` },
                 }
-              );
+            );
 
             const user = await response.json();
-            console.log("Google User : " , user)
-            console.log("After Save User Info Locally...")
+            console.log("Google User : ", user);
+            console.log("After Save User Info Locally...");
             setUserInfo(user);
             handleUserLogin(user);
         } catch (error) {
@@ -78,18 +78,17 @@ const LoginOptions = () => {
         }
     };
 
- 
     const handleUserLogin = async (user) => {
         await AsyncStorage.setItem('name', user.name);
         await AsyncStorage.setItem('email', user.email);
 
         const data = await signin_with_google(user.email);
-        console.log(data)
+        console.log(data);
         if (data.code === 200) {
             navigation.navigate("TopTab");
         } else if (data.code === 201) {
             authCtx.authenticate(data.token.access.token);
-            authCtx.authenticateUserId(data.data._id)
+            authCtx.authenticateUserId(data.data._id);
             navigation.navigate("Dev");
         } else {
             console.log("Something went wrong with GoogleSignIn");
@@ -104,34 +103,37 @@ const LoginOptions = () => {
     const handleLoginWithGoogle = async () => {
         refRBSheet.current.close();
         try {
-            await AsyncStorage.removeItem("@user")
+            await AsyncStorage.removeItem("@user");
             const result = await promptAsync();
             console.log("Google Auth Result:", result);
 
-        if (result.type === "success") {
-            const { authentication, params, url } = result;
-            console.log("Authentication details:", authentication);
-            console.log("Params:", params);
-            console.log("URL:", url);
+            if (result.type === "success") {
+                const { authentication, params, url } = result;
+                console.log("Authentication details:", authentication);
+                console.log("Params:", params);
+                console.log("URL:", url);
 
-            // If you want to display this information in your UI, you can set it to state variables
-            // setToken(authentication.accessToken);
-            // setUserInfo(authentication.accessToken);
-        } else if (result.type === "cancel") {
-            console.warn("Authentication cancelled by user.");
-        } else {
-            console.error("Unknown result type:", result);
-        }
+                // If you want to display this information in your UI, you can set it to state variables
+                // setToken(authentication.accessToken);
+                // setUserInfo(authentication.accessToken);
+            } else if (result.type === "cancel") {
+                console.warn("Authentication cancelled by user.");
+            } else {
+                console.error("Unknown result type:", result);
+            }
         } catch (error) {
             console.error("Error during Google login:", error);
         }
     };
 
     return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "grey" }}>
+        <ImageBackground
+            source={require('../../assets/Login_Wallpaper.png')} // Use the local image path
+            style={{ flex: 1, justifyContent: "center", alignItems: "center", height: 450, width: 'auto', marginTop: "20px" }}
+        >
             <RBSheet
                 ref={refRBSheet}
-                height={300}
+                height={260}
                 openDuration={250}
                 closeOnDragDown={true}
                 closeOnPressMask={false}
@@ -141,11 +143,23 @@ const LoginOptions = () => {
                     container: { borderTopLeftRadius: 10, borderTopRightRadius: 10 },
                 }}
             >
-                <View style={{ padding: 20 }}>
-                    <Pressable style={styles.button} onPress={handleLoginWithPhone}>
-                        <Icon name="phone" size={30} color="white" style={{ marginRight: 20 }} />
-                        <Text style={styles.btntxt}>Continue With Phone</Text>
-                    </Pressable>
+                <View style={{
+                    flex: 1,
+                    padding: 20,
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(106, 13, 173, 1)', // Dark color
+
+                }}>
+                    <TouchableRipple
+                        style={[styles.button, { borderWidth: 3, borderColor: 'white', flexDirection: 'row', alignItems: 'center' }]}
+                        onPress={handleLoginWithPhone}
+                    >
+                        <>
+                            <Icon name="phone" size={30} color="white" style={{ marginRight: 10 }} />
+                            <View style={{ height: 40, width: 2, backgroundColor: 'white', marginVertical: 5 }} />
+                            <Text style={styles.btntxt}> Continue With Phone</Text>
+                        </>
+                    </TouchableRipple>
 
                     <Pressable style={styles.Googlebutton} onPress={handleLoginWithGoogle}>
                         <Image
@@ -160,7 +174,7 @@ const LoginOptions = () => {
                     </Pressable>
                 </View>
             </RBSheet>
-        </View>
+        </ImageBackground>
     );
 };
 

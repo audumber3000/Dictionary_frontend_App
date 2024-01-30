@@ -383,6 +383,7 @@ function ProfileScreen() {
                               size: "2xl",
                             },
                           }}
+                          onPress={() => navigation.navigate("Edit")}
                         />
                       </HStack>
                     </Box>
