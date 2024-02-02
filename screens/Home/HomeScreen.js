@@ -17,7 +17,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import * as Contacts from "expo-contacts";
 import axios from "axios";
 import fetchData from "../../api/HomeAPI"
-
+import Loading from "./Dictionary/Loading";
 import SlideAlert from "../../components/TostMessage/SlideAlert";
 import PopularCards from "../../components/HomeScreenComp/PopularCard/PopularCards";
 import { AuthContext } from "../../store/auth-context";
@@ -64,7 +64,7 @@ export default function HomeScreen() {
     {loading ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
 
-        <ActivityIndicator size="large" color="#0000ff" />
+        <Loading />
         </View>
 
       ) : (
