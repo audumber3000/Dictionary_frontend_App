@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import TopCards from "../../components/LeaderBoardComp/TopCards";
 import CurveContainer from "../../components/LeaderBoardComp/CurvContainer";
-
+import Loading from "../Home/Dictionary/Loading";
 export default function LeadScreen1() {
   const [loading, setLoading] = useState(true);
   const setLoadingFalse=()=>{
@@ -22,9 +22,9 @@ export default function LeadScreen1() {
   return (
     <>
     {loading ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
+      <View>
 
-        <ActivityIndicator size="large" color="#0000ff" />
+        <Loading/>
         <TopCards setLoadingFalse={setLoadingFalse} />
 
         </View>

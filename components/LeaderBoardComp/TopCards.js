@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { leaderBoard } from "../../api/LeaderBoardAPI";
-
+import Loading from "../../screens/Home/Dictionary/Loading";
 export default function TopCards(props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);

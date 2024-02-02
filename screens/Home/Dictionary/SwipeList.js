@@ -210,11 +210,11 @@ export default function SwipeList({navigation}) {
           color={"black"}
         />
         <Text
-          style={{ bottom: 205, right: 100, fontSize: 18, fontWeight: "bold" }}
+          style={{ bottom: '90%', right: 100, fontSize: 18, fontWeight: "bold",position: "absolute", textAlign: "center" }}
         >
           Vocabulary mapping
         </Text>
-        <View style={{ top: 285, right: 120 }}>
+        <View style={{ top: 230, right: 120 }}>
           <AntDesign.Button
             name="closecircle"
             size={94}
@@ -227,7 +227,7 @@ export default function SwipeList({navigation}) {
           
           <Text style={{ fontSize: 20, left: 40 }}>NO</Text>
         </View>
-        <View style={{ top: 150, left: 120 }}>
+        <View style={{ top: 95, left: 120 }}>
           <AntDesign.Button
             name="checkcircle"
             size={94}
@@ -239,7 +239,7 @@ export default function SwipeList({navigation}) {
           />
           <Text style={{ fontSize: 20, left: 35 }}>YES</Text>
         </View>
-        <View style={{ top: 190 }}>
+        <View style={{ top: 160 }}>
           <Pressable
             onPress={() => {
               if (userWords.length < 10) {
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "grey",
     borderRadius: 16,
-    top: 110,
+    top: 30,
   },
   cardImage: {
     width: "100%",

@@ -16,6 +16,7 @@ import SignUp1 from "../screens/Auth/SignUp1";
 import SignUp2 from "../screens/Auth/SignUp2";
 import SignUp3 from "../screens/Auth/SignUp3";
 import SignUp4 from "../screens/Auth/SignUp4";
+import Edit from "../screens/Edit";
 import SignUp5 from "../screens/Auth/SignUp5";
 import BoardingScreen1 from "../screens/Auth/BoardingScreen1";
 import BoardingScreen2 from "../screens/Auth/BoardingScreen2";
@@ -381,6 +382,11 @@ function AuthenticatedStack() {
         <Stack.Screen
           name="LeadBoard"
           component={LeadBoard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Edit"
+          component={Edit}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

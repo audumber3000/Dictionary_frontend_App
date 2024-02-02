@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginBottom:20
   },
   box1: {
-    height: '50%',
+    height: '45%',
     flexDirection: 'row',
     paddingHorizontal:15
     
