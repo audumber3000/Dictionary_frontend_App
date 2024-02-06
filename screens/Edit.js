@@ -1,43 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from "react";
 import { View, StyleSheet, Text } from 'react-native';
 import { Appbar, TextInput, Button, Banner, RadioButton } from 'react-native-paper';
 import DatePicker from 'react-native-datepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { AuthContext } from "../store/auth-context";
+import { profileAPI } from "../api/profileScreenAPI";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
+import ProfileScreen from "./ProfileScreen";
 const Edit = () => {
     const [city, setCity] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [gender, setGender] = useState('');
+    const navigation = useNavigation();
+
+    const [data, setData] = useState([]);
+
+    const { token } = useContext(AuthContext);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Retrieve token from AsyncStorage
+                // const token = await AsyncStorage.getItem("token");
+
+                if (!token) {
+                    console.error("Token not found in AsyncStorage");
+                    return;
+                }
+
+                const response = await profileAPI(token)   // profile page GET API
+                const newData = response.data;
+                setData(newData);
+                // console.log(newData)
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <View style={styles.container}>
             <Appbar.Header>
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
                 <Appbar.Content title="Edit Profile" />
             </Appbar.Header>
 
             <View style={styles.content}>
                 <Banner visible={true} actions={[]} icon="information-outline">
                     Profile Completion {"\n"}
-                    86%        
-                    </Banner>
+                    86%
+                </Banner>
 
                 <TextInput
+                    label="Name"
+                    value={data.name}
+                    style={styles.input}
+                />
+                <TextInput
                     label="Mobile Number"
-                    value="1234567890"
+                    value={data.contact}
                     disabled
                     style={styles.input}
                 />
 
                 <TextInput
                     label="Email"
-                    value="user@example.com"
+                    value={data.email}
                     disabled
                     style={styles.input}
                 />
 
                 <TextInput
-                    label="City"
-                    value={city}
+                    label="Ciry"
+                    value={data.city}
                     onChangeText={(text) => setCity(text)}
                     style={styles.input}
                 />

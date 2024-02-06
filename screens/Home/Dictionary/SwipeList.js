@@ -186,7 +186,7 @@ export default function SwipeList({navigation}) {
                   name="menu"
                   size={24}
                   color={"black"}
-                  style={{ bottom: 154, left: 170 }}
+                  style={{ bottom: 140, left: 150 }}
                 />
               </Pressable>
             );
