@@ -17,6 +17,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import * as Contacts from "expo-contacts";
 import axios from "axios";
 import fetchData from "../../api/HomeAPI"
+import { profileAPI, updateUserAPI } from "../../api/profileScreenAPI";
+
 import Loading from "./Dictionary/Loading";
 import SlideAlert from "../../components/TostMessage/SlideAlert";
 import PopularCards from "../../components/HomeScreenComp/PopularCard/PopularCards";
@@ -24,6 +26,7 @@ import { AuthContext } from "../../store/auth-context";
 
 export default function HomeScreen() {
   const [apiData, setapiData] = useState([]);
+  const [notification, setnotification] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,17 +39,29 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const data = await fetchData(context.token);
+        // Retrieve token from context
+        const token = context.token;
+  
+        // Fetch data from the first source (fetchData)
+        const data = await fetchData(token);
+  
+        // Fetch data from the second source (profileAPI)
+        const profileResponse = await profileAPI(token);
+        const newData = profileResponse.data;
+  
+        // Set state variables
         setapiData(data);
+        setnotification(newData.notifications.length);
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchHomeData();
   }, [context.token]);
+  
 
   const renderContent = () => {
     if (loading) {
@@ -86,10 +101,10 @@ export default function HomeScreen() {
           style={styles.bellIcon}
         >
           <Fontisto name="bell-alt" size={40} color={"white"} />
-          {apiData.length > 0 && apiData[0].totalWords > 0 && (
+          {notification > -1 && (
             <View style={styles.notificationBadge}>
               <Text style={styles.notificationText}>
-                {apiData[0].totalWords}
+                {notification}
               </Text>
             </View>
           )}
