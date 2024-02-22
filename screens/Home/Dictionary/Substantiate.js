@@ -7,14 +7,21 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { AuthContext } from "../../../store/auth-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Audio } from "expo-av";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { AddToFavorites } from '../../../api/AddToFavourite'
+import { profileAPI } from "../../../api/profileScreenAPI";
 
 export default function Substantiate() {
   const route = useRoute();
+  const { token } = useContext(AuthContext);
+  const [data, setData] = useState([]);
 
   const word = route.params?.word;
   const meaning = route.params?.meaning;
@@ -41,14 +48,65 @@ export default function Substantiate() {
     console.log("Playing Sound");
     await sound.playAsync();
   }
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Retrieve token from AsyncStorage
+        // const token = await AsyncStorage.getItem("token");
+
+        if (!token) {
+          console.error("Token not found in AsyncStorage");
+          return;
+        }
+
+        const response = await profileAPI(token)   // profile page GET API
+        const newData = response.data;
+        setData(newData.favoriteWords);
+        console.log(newData.favoriteWords);
+        console.log(word);
+        // console.log(newData)
+        if(newData.favoriteWords.includes(word.charAt(0).toUpperCase() + word.slice(1)))
+        {
+          setIsFavorite(true);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
     return () => {
       if (sound) {
         sound.unloadAsync();
       }
     };
   }, [sound]);
+
+  const addToFavorites = async () => {
+    const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+    const updatedData = {
+      word: capitalizedWord
+      // other properties if needed
+    };
+
+    const userId = await AsyncStorage.getItem('userid');
+
+    try {
+      const response = await AddToFavorites(userId, updatedData, token);
+      console.log("Server Response:", response);  // Log the entire response
+      console.log("Word added to favorites:", response.data); // Log the data property
+      setIsFavorite(true);
+
+    } catch (error) {
+      console.error("Error adding word to favorites:", error);
+    }
+    
+  };
+
+
+  // ... rest of your component code ...
 
   return (
     <SafeAreaView>
@@ -101,12 +159,18 @@ export default function Substantiate() {
                   source={require("../../../assets/save.png")}
                 />
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.6}>
+              <TouchableOpacity onPress={addToFavorites} activeOpacity={0.6} disabled={isFavorite}>
                 <Image
                   style={{ width: 65, height: 65 }}
-                  source={require("../../../assets/favorite.png")}
+                  source={
+                    isFavorite
+                      ? require("../../../assets/favorite_added.png")
+                      : require("../../../assets/favorite.png")
+                  }
                 />
               </TouchableOpacity>
+
+
               <TouchableOpacity activeOpacity={0.6}>
                 <Image
                   style={{ width: 65, height: 65 }}

@@ -62,7 +62,9 @@ function ProfileScreen() {
         const response = await profileAPI(token)   // profile page GET API
         const newData = response.data;
         setData(newData);
+        console.log(newData);
         setLoading(false);
+        console.log(newData.notifications.length);
         // console.log(newData)
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -81,7 +83,7 @@ function ProfileScreen() {
       badge: "Verified",
     },
     { icon: "mail-open-outline", label: "Email", value: data.email },
-    { icon: "location-outline", label: "Location", value: data.city }, // (data.city)
+    { icon: "location-outline", label: "Location", value: data.address }, // (data.city)
     { icon: "calendar-outline", label: "Date of Birth", value: data.dob }, // (data.dob)
     { icon: "person-outline", label: "Gender", value: data.gender }, // (data.gender)
   ];
