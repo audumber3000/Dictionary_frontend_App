@@ -9,6 +9,8 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
+import { ScrollView } from 'react-native';
+
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { verify_otp } from "../../api/auth";
@@ -16,7 +18,8 @@ import { AuthContext } from "../../store/auth-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export default function Devotp() {
+export default function Devotp() 
+{
   const [OTP, setOTP] = useState("");
   const [OtpResponse, setOtpResponse] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -67,6 +70,8 @@ export default function Devotp() {
       contentContainerStyle={styles.container}
       extraScrollHeight={100}
     >
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 1 }}>
+
       <SafeAreaView style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
@@ -119,6 +124,8 @@ export default function Devotp() {
           <View style={{ flex: 1 }} />
         </View>
       </SafeAreaView>
+      </ScrollView>
+
     </KeyboardAwareScrollView>
   );
 }
