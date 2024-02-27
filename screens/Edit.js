@@ -18,6 +18,7 @@ const Edit = () => {
     const [data, setData] = useState([]);
     const navigation = useNavigation();
     const { token } = useContext(AuthContext);
+    const [showSuccessBanner, setShowSuccessBanner] = useState(false); 
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,11 +60,10 @@ const Edit = () => {
             const userid = await AsyncStorage.getItem('userid')
 
             const response = await updateUserAPI(userid, updatedData, token);
-            addToFavorites
 
             if (response.status === 200) {
-                console.log('Data updated successfully');
-                // You can navigate to another screen or perform other actions after successful update
+                console.log('Profile updated successfully');
+                setShowSuccessBanner(true); 
             } else {
                 console.error('Failed to update data:', response.statusText);
                 console.log(updatedData);
@@ -83,8 +83,19 @@ const Edit = () => {
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Text style={styles.heading}>Edit Profile</Text>
                 </Appbar.Header>
-
+                    
                 <View style={styles.content}>
+                {showSuccessBanner && (
+                        <Banner
+                            visible={true}
+                            actions={[]}
+                            icon="check-circle"
+                            style={{ backgroundColor: '#4CAF50', marginBottom: 16 }}
+                        >
+                            Profile Updated Successfully
+                        </Banner>
+                    )}
+
                     <Banner visible={true} actions={[]} icon="information-outline">
                         Profile Completion {"\n"}
                         86%

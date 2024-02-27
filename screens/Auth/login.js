@@ -10,6 +10,8 @@ import {
   Keyboard,
   ActivityIndicator,
 } from "react-native";
+import { ScrollView } from 'react-native';
+
 import { useNavigation } from "@react-navigation/native";
 import { send_otp } from "../../api/auth";
 import { AuthContext } from "../../store/auth-context";
@@ -63,6 +65,8 @@ export default function Dev() {
     //   extraScrollHeight={100}
     // >
       <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={{ paddingHorizontal: 1 }}>
+
         <View style={styles.imageContainer}>
           <Image
             style={{ width: 350, height: 350 }}
@@ -109,6 +113,8 @@ export default function Dev() {
           </Pressable>
           <View style={{ flex: 1 }} />
         </View>
+        </ScrollView>
+
       </SafeAreaView>
     //  </KeyboardAwareScrollView> 
   );
