@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -10,6 +10,8 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
+import { AuthContext } from "../../../store/auth-context";
+
 import axios from "axios";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -21,7 +23,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialTabs from "react-native-material-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
-
+import { profileAPI } from "../../../api/profileScreenAPI";
 export default function SearchSection() {
   const navigation = useNavigation();
 
@@ -41,8 +43,30 @@ export default function SearchSection() {
     let data = JSON.parse(await AsyncStorage.getItem("recentSearch"));
     setRecentSearches(data);
   };
+  const [favourites, setFavourites] = useState([]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Retrieve token from AsyncStorage
+        // const token = await AsyncStorage.getItem("token");
+
+        if (!token) {
+          console.error("Token not found in AsyncStorage");
+          return;
+        }
+
+        const response = await profileAPI(token)   // profile page GET API
+        const newData = response.data;
+        setFavourites(newData.favoriteWords);
+        console.log(newData.favoriteWords);
+        // console.log(newData)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
     getSearches();
   }, [refresh]);
   // const [wordResult, setWordResult] = useState([]);
@@ -60,6 +84,7 @@ export default function SearchSection() {
   };
 
   // Store searched word in async storage
+  const { token } = useContext(AuthContext);
 
   const storeWord = async (word) => {
     let prevData = JSON.parse(await AsyncStorage.getItem("recentSearch"));
@@ -223,6 +248,39 @@ export default function SearchSection() {
             {selectedTab == 0 && (
               <FlatList
                 data={recentSearches}
+                renderItem={({ item }) => (
+                  <Pressable
+                    onPress={() => {
+                      searchWord(item);
+                    }}
+                  >
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: baseFontSize * 1.3,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {item}
+                      </Text>
+
+                      <View
+                        style={{
+                          width: "100%",
+                          height: 2,
+                          backgroundColor: "#DEDEDE",
+                          marginTop: 7,
+                          marginBottom: 7,
+                        }}
+                      ></View>
+                    </View>
+                  </Pressable>
+                )}
+              />
+            )}
+            {selectedTab == 1 && (
+              <FlatList
+                data={favourites}
                 renderItem={({ item }) => (
                   <Pressable
                     onPress={() => {
