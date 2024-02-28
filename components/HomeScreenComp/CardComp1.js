@@ -4,13 +4,12 @@ import {
   Text,
   View,
   Dimensions,
-  Pressable,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
-import { TouchableOpacity } from "react-native";
 
 const baseFontSize = 20; // You can adjust this value as needed
 
@@ -30,8 +29,9 @@ export default function CardComp1(props) {
   return (
     <View style={styles.container}>
       <ImageBackground
-      //source={require('../../assets/word_of_the_day.png')} // Replace with the path to your background image
-      // style={styles.backgroundImage}
+        source={require('../../assets/word_of_the_day2.png')} // Replace with the path to your background image
+        style={styles.backgroundImage}
+        imageStyle={styles.backgroundImageStyle} // Apply border radius to image
       >
         <View style={styles.card}>
           <TouchableOpacity
@@ -70,13 +70,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   backgroundImage: {
-    borderRadius: 10,
     flex: 1,
-    resizeMode: "cover", // or 'stretch'
+    resizeMode: "cover",
     justifyContent: "center",
   },
+  backgroundImageStyle: {
+    borderRadius: 10, // Apply border radius to image
+  },
   card: {
-    backgroundColor: "rgba(125, 81, 198, 0.7)", // Use rgba to set background color with opacity
+    backgroundColor: "rgba(125, 81, 198, 0.7)",
     width: Dimensions.get("window").width * 0.9,
     height: 160,
     borderRadius: 10,

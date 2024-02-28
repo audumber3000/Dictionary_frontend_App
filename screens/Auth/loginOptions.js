@@ -139,15 +139,14 @@ const LoginOptions = () => {
                 closeOnPressMask={false}
                 customStyles={{
                     wrapper: { backgroundColor: "transparent" },
-                    draggableIcon: { backgroundColor: "grey" },
-                    container: { borderTopLeftRadius: 10, borderTopRightRadius: 10 },
+                    draggableIcon: { backgroundColor: "#D3D3D3" },
+                    container: { borderTopLeftRadius: 10, borderTopRightRadius: 10 , backgroundColor: 'rgba(106, 13, 173, 1)' },
                 }}
             >
                 <View style={{
                     flex: 1,
                     padding: 20,
                     justifyContent: 'center',
-                    backgroundColor: 'rgba(106, 13, 173, 1)', // Dark color
 
                 }}>
                     <TouchableRipple

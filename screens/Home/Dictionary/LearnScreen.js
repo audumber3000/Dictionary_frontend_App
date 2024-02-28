@@ -5,8 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Loading from './Loading';
 import { AuthContext } from '../../../store/auth-context';
 import * as Progress from "react-native-progress";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Button } from 'native-base';
+
 const LearnScreen = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -90,8 +91,11 @@ const LearnScreen = ({navigation}) => {
   };
 
   const General = () => {
-
-    if (!loading) {
+    if (loading) {
+      return <Loading />;
+    } else if (data.length === 0) {
+      return <Text>No data available</Text>; // Or any other placeholder message
+    } else {
       return (
         <View style={styles.middleContainer}>
           <FlatList
@@ -100,8 +104,6 @@ const LearnScreen = ({navigation}) => {
           />
         </View>
       );
-    } else {
-      return <Loading />;
     }
   };
 
@@ -112,8 +114,8 @@ const LearnScreen = ({navigation}) => {
       <View style={styles.topView}>
         <Text style={{ fontSize: 26, fontWeight: 'bold', color: 'white', left: 20, top: 10 }}>Word Categories</Text>
         <Image style={styles.imgView} source={require('../../../assets/Group1.png')} />
-
       </View>
+
       <View style={styles.bottomView}>
         <View style={styles.buttonView}>
         <TouchableOpacity
@@ -163,33 +165,36 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     top: 20,
   },
-  buttonView: {
-    flexDirection: 'row',
-    left: 5,
-    top: 6,
-  },
+
   textView: {
     fontSize: 25,
     fontWeight: '800',
     color: '#5620ad',
   },
+  buttonView: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start', // Align buttons from the left
+    paddingLeft: 20, // Add left padding to space buttons from the left edge
+    paddingBottom: 5,
+  },
   firstBtn: {
-    left:20,
     paddingVertical: 14,
-    borderBottomWidth: 2, // Default bottom border
-    borderColor: 'transparent', // Default border color
-    
+    paddingHorizontal: 20, // Add horizontal padding for spacing
+    borderBottomWidth: 4,
+    borderColor: 'transparent',
   },
   secondBtn: {
-   left:60,
+    marginLeft: 20, // Add left margin for spacing between buttons
     paddingVertical: 14,
-    borderBottomWidth: 2, // Default bottom border
-    borderColor: 'transparent', // Default border color
+    paddingHorizontal: 20, // Add horizontal padding for spacing
+    borderBottomWidth: 4,
+    borderColor: 'transparent',
   },
   selected: {
     borderColor: '#5620ad',
-    
-    
+  },
+  selectedText: {
+    color: '#5620ad',
   },
   selectedText: {
     color: '#5620ad', // Selected text color

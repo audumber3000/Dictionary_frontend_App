@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   searchIcon: {
-    padding: 10,
+    padding: 2,
   },
   searchBar: {
     flex: 1,
