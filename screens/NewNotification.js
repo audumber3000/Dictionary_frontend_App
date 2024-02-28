@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Pressable } from "react-native";
-import React from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
   Entypo,
   FontAwesome,
@@ -10,13 +10,51 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../store/auth-context";
+import fetchData from "../api/HomeAPI"
+import { profileAPI, updateUserAPI } from "../api/profileScreenAPI";
+import Loading from "./Home/Dictionary/Loading";
 
 export default function NewNotification() {
   const baseFontSize = 16;
-
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-
+  const context = useContext(AuthContext);
+  const [notification, setnotification] = useState([]);
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        // Retrieve token from context
+        const token = context.token;
+  
+        // Fetch data from the first source (fetchData)
+        const data = await fetchData(token);
+  
+        // Fetch data from the second source (profileAPI)
+        const profileResponse = await profileAPI(token);
+        const newData = profileResponse.data;
+  
+        // Set state variables
+        setnotification(newData.notifications);
+        console.log(newData.notifications);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchHomeData();
+  }, [context.token]);
   return (
+    <>
+    {loading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
+
+        <Loading />
+        </View>
+
+      ) : (
     <SafeAreaView>
       <View style={styles.container}>
         {/* <View style={styles.innerContainer}>
@@ -82,7 +120,7 @@ export default function NewNotification() {
         </View>
 
         {/* Dummy Notifications */}
-        <FlatList
+        {/* <FlatList
           enableEmptySections={true}
           style={{ marginTop: 15 }}
           data={feed.slice(0, 6)}
@@ -120,9 +158,44 @@ export default function NewNotification() {
               </View>
             </View>
           )}
-        />
+        /> */}
+        {notification.map((item) => (
+          <View key={item.id} style={styles.notificationBox}>
+            <View style={styles.content}>
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={styles.iconbackground}>
+                    <MaterialCommunityIcons
+                      onPress={() => console.log("clicked")}
+                      style={{ top: 17 }}
+                      size={25}
+                      name={item.icon}
+                      color={item.iconcolor}
+                    />
+                    <Entypo
+                      size={25}
+                      onPress={() => console.log("clicked")}
+                      style={{ bottom: 17 }}
+                      name={item.iconcross}
+                      color={item.iconcolor}
+                    />
+                  </View>
+                  <Text style={styles.description}>{item}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        ))}
       </View>
     </SafeAreaView>
+    )}
+      </>
   );
 }
 
@@ -157,7 +230,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 15,
     paddingRight: 15,
-    marginTop: 15,
+    marginTop: 25,
     marginBottom: 5,
     backgroundColor: "white",
     flexDirection: "row",
