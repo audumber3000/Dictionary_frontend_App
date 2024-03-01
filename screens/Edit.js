@@ -80,7 +80,7 @@ const Edit = () => {
         <View style={styles.container}>
             <ScrollView contentContainerStyle={{ paddingHorizontal: 1 }}>
             <Appbar.Header style={styles.appBar}>
-                    <Appbar.BackAction onPress={() => navigation.goBack()} />
+            <Appbar.BackAction onPress={() => navigation.goBack()} color="#fff" size={40} />
                     <Text style={styles.heading}>Edit Profile</Text>
                 </Appbar.Header>
                     
@@ -162,7 +162,6 @@ const Edit = () => {
 
 const styles = StyleSheet.create({
     heading: {
-        padding: 20,
         // marginTop: 60,
         fontSize: 30,
         color: "#fff",
