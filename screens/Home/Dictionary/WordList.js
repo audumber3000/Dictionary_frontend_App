@@ -7,6 +7,7 @@ import {
   Pressable,
 } from "react-native";
 import { useRoute } from '@react-navigation/native';
+import { List } from "react-native-paper";
 
 import React, { useState, useEffect, useContext } from "react";
 import Feed from "../../../LakshitModule/Feed";
@@ -25,6 +26,7 @@ import { swipeListAPI } from "../../../api/LearnScreenAPI";
 export default function WordList() {
   const { params } = useRoute();
   const { apiData } = params;
+  const { cardText } = params;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +44,8 @@ export default function WordList() {
         }
         const response = await swipeListAPI(token);
         const newData = response.data.data;
-        setData(newData);
+        setData(data);
+        console.log(apiData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -55,19 +58,14 @@ export default function WordList() {
   const navigation = useNavigation();
 
   const renderWordItem = ({ item }) => (
-    <View key={item.id} style={styles.listcard}>
-      <Image style={styles.cardimage} source={{ uri: item.Image }} />
-      <Text style={styles.cardtext}>{item.word}</Text>
-      <Text style={styles.cardtext2}>{item.meaning}</Text>
-      <Text style={styles.cardtext2}>{item.use_case}</Text>
-      <FontAwesome5
-        style={{ bottom: 110, textAlign: "right", right: 20 }}
-        // onPress={() => navigation.navigate("Instructions")}
-        name="arrow-circle-right"
-        size={22}
-        color={"#8F6ACD"}
-      />
-    </View>
+    <List.Item
+      title={item.word}
+      description={item.meaning + "\n" + item.use_case}
+      titleStyle={{ fontWeight: "bold" }}
+      descriptionStyle={{ fontWeight: "bold" }}
+      descriptionNumberOfLines={0}
+      style={styles.listItem}
+    />
   );
   if (!loading) {
     return (
@@ -85,7 +83,7 @@ export default function WordList() {
                     name="menu"
                     size={24}
                     color={"black"}
-                    style={{ bottom: 0, left: 230 }}
+                    style={{ bottom: 0, left: '1200%' }}
                   />
                 </Pressable>
               );
@@ -94,7 +92,7 @@ export default function WordList() {
             <Menu.Item onPress={() => navigation.navigate("SwipeList")}>
               Card View
             </Menu.Item>
-            <Menu.Item onPress={() => navigation.navigate("WordList")}>
+            <Menu.Item onPress={() => navigation.navigate("WordList", { apiData })}>
               List View
             </Menu.Item>
             <Menu.Item onPress={() => navigation.navigate("TagScreen")}>
@@ -102,19 +100,19 @@ export default function WordList() {
             </Menu.Item>
           </Menu>
           <AntDesign
-            style={{ right: 150 }}
+            style={{ right:'60%' }}
             onPress={() => navigation.goBack()}
             name="arrowleft"
             size={24}
             color={"black"}
           />
-          <Text style={styles.headertext}>apiData</Text>
+          <Text style={styles.headertext}>{cardText}</Text>
         </View>
         <View style={{ flex: 4, bottom: 40 }}>
           {loading && <Text>Loading</Text>}
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={data.flatMap((category) => category.wordsList)}
+            data={apiData.flatMap((category) => category)}
             keyExtractor={(_item, index) => index.toString()}
             renderItem={renderWordItem}
           />
@@ -146,10 +144,22 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   cardimage: {
-    width: 102,
+    width: 0,
+    height: 100,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+  },
+  listItem: {
+    backgroundColor: "white",
+    width: 370,
     height: 110,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderRadius: 10,
+    marginBottom: 15,
+    elevation: 4,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.23,
+    shadowRadius: 10,
   },
   cardtext: {
     textAlign: "left",
@@ -157,11 +167,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "900",
     left: 115,
+    height:'100'
   },
   headertext: {
     fontSize: 20,
     fontWeight: "900",
-    right: 140,
+    right: '55%',
     bottom: 2,
   },
   cardtext2: {

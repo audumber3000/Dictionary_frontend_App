@@ -11,11 +11,17 @@ import * as Speech from "expo-speech";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Menu } from "native-base";
 import Loading from "./Loading";
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
+
 import { AuthContext } from "../../../store/auth-context";
 import { swipeListAPI } from "../../../api/LearnScreenAPI";
 import AnimatedLottieView from "lottie-react-native";
-export default function SwipeList({navigation}) {
+export default function SwipeList({ navigation }) {
   const [lastQuestionReached, setLastQuestionReached] = useState(false);
+  const { params } = useRoute();
+
+  const { cardText } = params;
 
   const [index, setIndex] = useState(0);
   const [data, setData] = useState([]);
@@ -40,11 +46,11 @@ export default function SwipeList({navigation}) {
         }
         const response = await swipeListAPI(token); // API call
         const newData = response.data.data;
-       
+
         setWordArr([]);
         formWordArray(newData);
         setData(newData);
-        console.log(wordArr)
+        console.log(response.data.data)
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -60,20 +66,20 @@ export default function SwipeList({navigation}) {
 
   const onSwiped = () => {
     setIndex((index + 1) % Feed.length);
-    setSwipeCount(swipeCount+1)
+    setSwipeCount(swipeCount + 1)
   };
 
   const formWordArray = (data) => {
     const tempArr = [];
     data.map((e) => {
       e.wordsList.map((word) => {
-        
+
         tempArr.push(word);
-        
+
       });
     });
     setWordArr(tempArr);
-    
+
   };
 
 
@@ -87,12 +93,12 @@ export default function SwipeList({navigation}) {
       return [...prevVal, wordObj];
     });
     currentCardIndex.current += 1;
-    if (currentCardIndex.current > wordArr.length-1) {
+    if (currentCardIndex.current > wordArr.length - 1) {
       setTimeout(() => {
         navigation.navigate("Learn")
-      },1300)
+      }, 1300)
 
-      
+
     }
   };
 
@@ -106,11 +112,11 @@ export default function SwipeList({navigation}) {
       return [...prevVal, wordObj];
     });
     currentCardIndex.current += 1;
-    if (currentCardIndex.current >wordArr.length-1) {
+    if (currentCardIndex.current > wordArr.length - 1) {
       setLoading(true)
       setTimeout(() => {
         navigation.navigate("Learn")
-      },1300)
+      }, 1300)
 
 
     }
@@ -131,7 +137,7 @@ export default function SwipeList({navigation}) {
             name="volume-high"
             size={32}
             style={{ textAlign: "right", right: 20, bottom: 25 }}
-            onPress={() => Speech.speak(card?.word)  }
+            onPress={() => Speech.speak(card?.word)}
           />
           <Text style={styles.caption}>{card?.use_case}</Text>
           <Text style={{ top: 90, left: 20, position: "absolute" }}>
@@ -146,34 +152,34 @@ export default function SwipeList({navigation}) {
     return (
       <View style={styles.container}>
         {swipeCount >= 4 ?
-          
-            <LottieView
-    style={{ width: 200, height: 900,position:'absolute' }}
-    source={require('../../../assets/coin/celebration.json')}
-    autoPlay
-    loop
-  />
 
-  
-      :
-      (<Swiper
-        ref={swiperRef}
-        backgroundColor="white"
-        cards={wordArr}
-        cardIndex={index}
-        renderCard={(card) => Card(card)}
-        onSwiped={onSwiped}
-        onSwipedLeft={unknownWord}
-        onSwipedRight={knownWord}
-        disableBottomSwipe
-        disableTopSwipe
-        animateCardOpacity
-        stackSize={2}
-        stackScale={10}
-        stackSeparation={1}
-        // infinite
-      />)    
-      }
+          <LottieView
+            style={{ width: 200, height: 900, position: 'absolute' }}
+            source={require('../../../assets/coin/celebration.json')}
+            autoPlay
+            loop
+          />
+
+
+          :
+          (<Swiper
+            ref={swiperRef}
+            backgroundColor="white"
+            cards={wordArr}
+            cardIndex={index}
+            renderCard={(card) => Card(card)}
+            onSwiped={onSwiped}
+            onSwipedLeft={unknownWord}
+            onSwipedRight={knownWord}
+            disableBottomSwipe
+            disableTopSwipe
+            animateCardOpacity
+            stackSize={2}
+            stackScale={10}
+            stackSeparation={1}
+          // infinite
+          />)
+        }
         <Menu
           style={{ bottom: 154, left: 70 }}
           trigger={(triggerProps) => {
@@ -192,12 +198,23 @@ export default function SwipeList({navigation}) {
             );
           }}
         >
-          <Menu.Item onPress={() => navigation.navigate("SwipeList")}>
+          <Menu.Item onPress={() => navigation.navigate("SwipeList", cardText)}>
             Card View
           </Menu.Item>
-          <Menu.Item onPress={() => navigation.navigate("WordList")}>
+          <Menu.Item onPress={() => {
+            const selectedCategory = data.find(category => category.name === cardText);
+
+            // Check if a category with the matching name was found
+            if (selectedCategory) {
+              navigation.navigate("WordList", { apiData: selectedCategory.wordsList, cardText });
+            } else {
+              // Handle the case where no matching category was found
+              console.warn(`Category with name "${cardText}" not found.`);
+            }
+          }}>
             List View
           </Menu.Item>
+
           <Menu.Item onPress={() => navigation.navigate("TagScreen")}>
             Tag View
           </Menu.Item>
@@ -210,7 +227,7 @@ export default function SwipeList({navigation}) {
           color={"black"}
         />
         <Text
-          style={{ bottom: '90%', right: 100, fontSize: 18, fontWeight: "bold",position: "absolute", textAlign: "center" }}
+          style={{ bottom: '90%', right: 100, fontSize: 18, fontWeight: "bold", position: "absolute", textAlign: "center" }}
         >
           Vocabulary mapping
         </Text>
@@ -224,7 +241,7 @@ export default function SwipeList({navigation}) {
             color={"#EE6A6A"}
             onPress={() => swiperRef.current.swipeLeft()}
           />
-          
+
           <Text style={{ fontSize: 20, left: 40 }}>NO</Text>
         </View>
         <View style={{ top: 95, left: 120 }}>
