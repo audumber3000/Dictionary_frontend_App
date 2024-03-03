@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList } from 'react
 import React, { useEffect, useState,useContext } from 'react';
 import axios from 'axios';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from "expo-status-bar";
 import Loading from './Loading';
 import { AuthContext } from '../../../store/auth-context';
 import * as Progress from "react-native-progress";
@@ -108,8 +109,8 @@ const LearnScreen = ({navigation}) => {
   };
 
   return (
+    
     <SafeAreaView style={styles.container}>
-      
 
       <View style={styles.topView}>
         <Text style={{ fontSize: 26, fontWeight: 'bold', color: 'white', left: 20, top: 10 }}>Word Categories</Text>
