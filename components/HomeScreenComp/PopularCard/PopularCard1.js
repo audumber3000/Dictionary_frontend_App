@@ -19,7 +19,7 @@ const PopularCard1 = ({ cardImage, cardText, isLatest, views, apiData }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("WordList", { apiData });
+        navigation.navigate("WordList", { apiData,cardText });
         console.log(apiData);
       }}
     >

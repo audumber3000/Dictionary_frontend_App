@@ -46,7 +46,7 @@ const LearnScreen = ({navigation}) => {
   const RenderItem = ({ item }) => {
     return (
       <>
-<Button onPress={() => navigation.navigate("SwipeList")} style={{ backgroundColor: 'white' }}>
+<Button onPress={() => navigation.navigate("SwipeList", { 'cardText': item.name })} style={{ backgroundColor: 'white' }}>
       <View style={styles.flatContainer}>
         <View style={styles.cardContainer}>
           <View style={styles.flatListImg}>

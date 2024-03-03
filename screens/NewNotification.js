@@ -7,6 +7,8 @@ import {
 } from "@expo/vector-icons";
 import feed from "../LakshitModule/Feed";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { Appbar, TextInput, Button, Banner, RadioButton } from 'react-native-paper';
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -26,14 +28,14 @@ export default function NewNotification() {
       try {
         // Retrieve token from context
         const token = context.token;
-  
+
         // Fetch data from the first source (fetchData)
         const data = await fetchData(token);
-  
+
         // Fetch data from the second source (profileAPI)
         const profileResponse = await profileAPI(token);
         const newData = profileResponse.data;
-  
+
         // Set state variables
         setnotification(newData.notifications);
         console.log(newData.notifications);
@@ -43,21 +45,47 @@ export default function NewNotification() {
         setLoading(false);
       }
     };
-  
+
     fetchHomeData();
   }, [context.token]);
   return (
     <>
-    {loading ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top:'30' }}>
+      {loading ? (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top: '30' }}>
 
-        <Loading />
+          <Loading />
         </View>
 
       ) : (
-    <SafeAreaView>
-      <View style={styles.container}>
-        {/* <View style={styles.innerContainer}>
+        <SafeAreaView>
+          <Appbar.Header style={styles.appBar}>
+          <Appbar.BackAction onPress={() => navigation.goBack()} color="#fff" size={40} />
+            <Text style={styles.heading}>Notifications</Text>
+            <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end", alignItems: "center", marginRight: 16 }}>
+              {/* Mark all as read Icon */}
+              <Text>
+                <MaterialCommunityIcons
+                  name="checkbox-multiple-marked-outline"
+                  size={baseFontSize * 2.0}
+                  color={"#fff"}
+                />
+              </Text>
+              {/* Mark all as read Text */}
+              {/* <Text>
+      <Ionicons
+        name="checkmark-done-sharp"
+        color={"#8F6ACD"}
+        size={baseFontSize}
+      />
+    </Text>
+    <Text style={{ fontSize: baseFontSize * 0.8, color: "#8F6ACD" }}>
+      Mark all as read
+    </Text> */}
+            </View>
+          </Appbar.Header>
+
+          <View style={styles.container}>
+            {/* <View style={styles.innerContainer}>
         <FontAwesome style={{ right: 80 }} onPress={()=>console.log("clicked")} name="bars" size={25} />
         <Text style={styles.notification}>Notifications</Text>
         <MaterialCommunityIcons
@@ -67,60 +95,21 @@ export default function NewNotification() {
           onPress={()=>console.log("clicked")}
         />
       </View> */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-            <Pressable
-              onPress={() => {
-                navigation.goBack();
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "flex-end",
+                justifyContent: "space-between",
               }}
             >
-              <Text>
-                <Ionicons name="arrow-back-outline" size={baseFontSize * 1.6} />
-              </Text>
-            </Pressable>
-            <Text style={{ fontSize: baseFontSize * 1.5 }}>Notifications</Text>
-          </View>
-          <Pressable
-            onPress={() => {
-              console.warn("Marked all as read");
-            }}
-          >
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-            >
-              {/* Mark all as read Icon */}
 
-              <Text>
-                <MaterialCommunityIcons
-                  name="checkbox-multiple-marked-outline"
-                  size={baseFontSize * 1.6}
-                  color={"#8F6ACD"}
-                />
-              </Text>
 
-              {/* Mark all as read Text */}
-              {/* <Text>
-                <Ionicons
-                  name="checkmark-done-sharp"
-                  color={"#8F6ACD"}
-                  size={baseFontSize}
-                />
-              </Text>
-              <Text style={{ fontSize: baseFontSize * 0.8, color: "#8F6ACD" }}>
-                Mark all as read
-              </Text> */}
+
+
             </View>
-          </Pressable>
-        </View>
 
-        {/* Dummy Notifications */}
-        {/* <FlatList
+            {/* Dummy Notifications */}
+            {/* <FlatList
           enableEmptySections={true}
           style={{ marginTop: 15 }}
           data={feed.slice(0, 6)}
@@ -159,47 +148,57 @@ export default function NewNotification() {
             </View>
           )}
         /> */}
-        {notification.map((item) => (
-          <View key={item.id} style={styles.notificationBox}>
-            <View style={styles.content}>
-              <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                  }}
-                >
-                  <View style={styles.iconbackground}>
-                    <MaterialCommunityIcons
-                      onPress={() => console.log("clicked")}
-                      style={{ top: 17 }}
-                      size={25}
-                      name={item.icon}
-                      color={item.iconcolor}
-                    />
-                    <Entypo
-                      size={25}
-                      onPress={() => console.log("clicked")}
-                      style={{ bottom: 17 }}
-                      name={item.iconcross}
-                      color={item.iconcolor}
-                    />
+            {notification.map((item) => (
+              <View key={item.id} style={styles.notificationBox}>
+                <View style={styles.content}>
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <View style={styles.iconbackground}>
+                        <MaterialCommunityIcons
+                          onPress={() => console.log("clicked")}
+                          style={{ top: 17 }}
+                          size={25}
+                          name={item.icon}
+                          color={item.iconcolor}
+                        />
+                        <Entypo
+                          size={25}
+                          onPress={() => console.log("clicked")}
+                          style={{ bottom: 17 }}
+                          name={item.iconcross}
+                          color={item.iconcolor}
+                        />
+                      </View>
+                      <Text style={styles.description}>{item}</Text>
+                    </View>
                   </View>
-                  <Text style={styles.description}>{item}</Text>
                 </View>
               </View>
-            </View>
+            ))}
           </View>
-        ))}
-      </View>
-    </SafeAreaView>
-    )}
-      </>
+        </SafeAreaView>
+      )}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  heading: {
+    // marginTop: 60,
+    fontSize: 30,
+    color: "#fff",
+    fontWeight: "bold", // Make the font bold
+  },
+  appBar: {
+    backgroundColor: '#A678F2',
+    height: 80, // Set the desired height for the header
+  },
   container: {
     width: "100%",
     height: "100%",
