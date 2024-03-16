@@ -9,6 +9,7 @@ import Navigation1 from "./navigations/navigation";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message"; //Toast Notification
 import { NativeBaseProvider } from "native-base";
+import { useFonts } from 'expo-font';
 
 import { usePushNotifications } from "./pushNotification";
 
@@ -17,6 +18,9 @@ function Root() {
   const [isTryingLogin, setIsTryingLogin] = useState(true);
 
   const authCtx = useContext(AuthContext);
+
+  
+
 
   useEffect(() => {
     async function fetchToken() {
@@ -31,6 +35,16 @@ function Root() {
 
     fetchToken();
   }, []);
+
+//loading fonts
+  const [fontsLoaded, fontError] = useFonts({
+    'Roboto-Black': require('./assets/fonts/Roboto-Black.ttf'),
+  });
+
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   if (isTryingLogin) {
     return <AppLoading />;

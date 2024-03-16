@@ -60,10 +60,10 @@ export default function Dev() {
   };
 
   return (
-    // <KeyboardAwareScrollView
-    //   contentContainerStyle={styles.container}
-    //   extraScrollHeight={100}
-    // >
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.container}
+      extraScrollHeight={100}
+    >
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{ paddingHorizontal: 1 }}>
 
@@ -77,9 +77,7 @@ export default function Dev() {
           <Text style={styles.text}>
             Your #1 Vocabulary Learning Companion !
           </Text>
-          {/* <Text style={styles.text2}>
-          Amplify with Wordify
-        </Text> */}
+        
           <Text style={styles.text3}>Phone</Text>
           <TextInput
             placeholder="+91"
@@ -116,7 +114,7 @@ export default function Dev() {
         </ScrollView>
 
       </SafeAreaView>
-    //  </KeyboardAwareScrollView> 
+     </KeyboardAwareScrollView> 
   );
 }
 

@@ -10,7 +10,7 @@ import UserFeedback from "../screens/Profile/UserFeedback";
 import ReportDamage from "../screens/Profile/ReportDamage";
 import SearchResults from "../screens/SearchResultScreen";
 import Search from "../screens/Home/Dictionary/SearchScreen";
-import Stepper from "../screens/service_order";
+
 //testing screens
 import SignUp1 from "../screens/Auth/SignUp1";
 import SignUp2 from "../screens/Auth/SignUp2";
@@ -234,25 +234,7 @@ function ReportDamageStack() {
   );
 }
 
-function ServiceStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Service"
-        component={Stepper}
-        options={{
-          title: "Service",
-          headerTitleStyle: {
-            color: "#fff",
-          },
-          headerStyle: {
-            backgroundColor: GlobalStyles.colors.primary800,
-          },
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
+
 
 function AuthenticatedStack() {
   return (
@@ -332,12 +314,7 @@ function AuthenticatedStack() {
           options={{ headerShown: false }}
         />
 
-        
-        <Stack.Screen
-          name="Service"
-          component={ServiceStack}
-          options={{ headerShown: false }}
-        />
+    
         <Stack.Screen
           name="Substantiate"
           component={Substantiate}
